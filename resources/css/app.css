@@ -1,0 +1,90 @@
+/* ==========================================================================
+   1. BUNDLING & FRAMEWORK
+   ========================================================================== */
+
+/* Meng-import style.css ke sini agar di-bundle Vite menjadi 1 file saja */
+@import "./style.css";
+
+/* FIX: Hapus '@import "tailwindcss";' jika Anda menggunakan Tailwind v3. 
+   Mencampur keduanya bisa membuat file CSS membengkak 2x lipat saat di-build. */
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   2. GLOBAL & ACCESSIBILITY OPTIMIZATION
+   ========================================================================== */
+
+/* OPTIMASI: Bungkus smooth-scroll dengan prefers-reduced-motion. 
+   Beberapa user mobile menonaktifkan animasi di pengaturan HP mereka untuk menghemat baterai/kinerja. */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+body {
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility; /* Tambahan: Memaksa browser me-render teks lebih tajam */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   3. CUSTOM UTILITIES
+   ========================================================================== */
+
+/* Subtle linen-paper texture instead of any gradient/glassmorphism */
+.paper-texture {
+    background-color: #FAF9F6;
+    background-image: radial-gradient(#E2E4E8 0.6px, transparent);
+    background-size: 16px 16px;
+}
+
+/* Wax-seal signature mark used in the hero and footer */
+.seal-mark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* OPTIMASI PERFORMA ANIMASI MOBILE (Sangat Berpengaruh pada Speed Index) */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        
+        /* PENTING: Memicu Hardware Acceleration (GPU) pada HP. 
+           Tanpa ini, proses scroll-reveal akan membebani CPU mobile dan membuat FPS drop/patah-patah */
+        will-change: transform, opacity; 
+    }
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.focus-ring:focus-visible {
+    outline: 2px solid #B68A35;
+    outline-offset: 2px;
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.prose table th,
+.prose table td {
+  border: 1px solid #cbd5e1; /* slate-300 */
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+}
+
+.prose table thead th {
+  background-color: #f8fafc; /* slate-50 */
+  font-weight: 700;
+}
