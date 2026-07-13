@@ -9,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {{-- ============================================================
-         PERBAIKAN: deteksi kebutuhan Livewire di sini, self-contained.
-         Tidak bergantung pada variabel yang dikirim dari controller.
+         Deteksi kebutuhan Livewire di sini, self-contained.
          Livewire cuma dipakai di halaman detail artikel (fitur komentar).
     ============================================================ --}}
     @php
@@ -225,7 +224,23 @@
         fetchpriority="high">
 
     {{-- ============================================================
+         PERBAIKAN (Font display insight): preload 2 file font icon
+         FontAwesome yang kena flag di PageSpeed. Ini mempercepat
+         network fetch-nya tanpa perlu ubah font-display — icon font
+         tidak butuh FOUT/swap karena tidak ada fallback yang readable.
+    ============================================================ --}}
+    <link rel="preload" as="font" type="font/woff2"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/webfonts/fa-solid-900.woff2"
+        crossorigin>
+    <link rel="preload" as="font" type="font/woff2"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/webfonts/fa-brands-400.woff2"
+        crossorigin>
+
+    {{-- ============================================================
          CSS & JS pihak ketiga — Non-blocking
+         PERBAIKAN (Cache lifetimes): Swiper & Alpine di-pin ke versi
+         exact (bukan range @11 / @3.x.x lagi) supaya jsDelivr kasih
+         Cache-Control immutable 1 tahun, bukan cuma 7 jam.
     ============================================================ --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
@@ -238,10 +253,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     </noscript>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.css" media="print"
         onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.css">
     </noscript>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap"
@@ -250,7 +265,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
     </noscript>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.12/dist/cdn.min.js"></script>
 
     <style>
     .font-heading {
@@ -285,7 +300,7 @@
 
     <x-footer />
 
-    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
     <script>
