@@ -1,20 +1,28 @@
-<x-layout.app>
-
-    {{-- ================================================================
+{{-- ================================================================
          SEO — Halaman List Artikel
     ================================================================ --}}
     @php
-    $title = 'Blog & Edukasi Digital | Tips Bisnis & Tutorial Web | Cakra Inovasi Digital';
-    $metaDescription = 'Temukan tips bisnis digital, tutorial pembuatan website, strategi pemasaran online, dan berita
-    teknologi terbaru untuk membantu UMKM Indonesia naik kelas.';
-    $metaKeywords = 'blog bisnis digital, tips website umkm, tutorial web, strategi pemasaran online, edukasi teknologi,
-    cakra inovasi digital blog';
-    $canonicalUrl = url('/artikel');
-    $ogType = 'website';
-    $ogTitle = 'Blog & Edukasi Digital — Cakra Inovasi Digital';
-    $ogDescription = 'Tips bisnis, tutorial web, dan strategi pemasaran online untuk UMKM Indonesia naik kelas.';
-    $ogImage = asset('images/og-image.png');
+        $title = 'Blog & Edukasi Digital | Tips Bisnis & Tutorial Web | Cakra Inovasi Digital';
+        $metaDescription = 'Temukan tips bisnis digital, tutorial pembuatan website, strategi pemasaran online, dan berita
+        teknologi terbaru untuk membantu UMKM Indonesia naik kelas.';
+        $metaKeywords = 'blog bisnis digital, tips website umkm, tutorial web, strategi pemasaran online, edukasi teknologi,
+        cakra inovasi digital blog';
+        $canonicalUrl = url('/artikel');
+        $ogType = 'website';
+        $ogTitle = 'Blog & Edukasi Digital — Cakra Inovasi Digital';
+        $ogDescription = 'Tips bisnis, tutorial web, dan strategi pemasaran online untuk UMKM Indonesia naik kelas.';
+        $ogImage = asset('images/og-image.png');
     @endphp
+
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :canonical="$canonicalUrl"
+    :og-title="$ogTitle"
+    :og-description="$ogDescription"
+    :og-image="$ogImage"
+    :og-type="$ogType"
+>
 
     {{-- ================================================================
          HERO SECTION

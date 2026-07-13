@@ -1,4 +1,22 @@
-<x-layout.app>
+@php
+    // --- Konfigurasi Metadata & SEO ---
+    $title = 'Cakra Inovasi Digital | Mitra Transformasi Digital UMKM Indonesia Profesional';
+    $metaDescription = 'Cakra Inovasi Digital menyediakan jasa pembuatan website profesional, toko online, sistem POS
+    (Kasir Digital), dan solusi ERP kustom untuk UMKM. Tingkatkan level bisnis Anda dengan teknologi modern, harga
+    transparan, dan dukungan purna jual terpercaya.';
+    $metaKeywords = 'jasa pembuatan website profesional, website UMKM premium, toko online kustom, company profile
+    modern, sistem kasir digital POS, ERP UMKM, web developer Magelang, solusi digital Jawa Tengah';
+    $ogType = 'website';
+    // Asumsi suffix didefinisikan di app.blade.php atau controller, jika tidak, uncomment baris bawah:
+    // $suffix = ' | Cakra Digital';
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+>
 
     @php
     // --- Konfigurasi Metadata & SEO ---

@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Harga & Perbandingan Paket Website Company Profile | Cakra Inovasi Digital';
     $metaDescription = 'Bandingkan harga dan fitur lengkap paket website company profile Cakra Inovasi Digital —
     Starter, Professional, hingga Enterprise. Transparan, tanpa biaya tersembunyi.';
@@ -8,7 +6,18 @@
     website company profile Indonesia, website bisnis profesional';
     $ogType = 'website';
     $canonicalUrl = url('/fitur/web-perusahaan');
+@endphp
 
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    @php
+    
     $faqsData = [
     ['question' => 'Apakah saya bisa upgrade paket di kemudian hari?', 'answer' => 'Tentu. Anda bisa upgrade ke paket
     lebih tinggi kapan saja. Tim kami membantu proses penyesuaian fitur dan biaya tambahan secara transparan.'],

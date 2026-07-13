@@ -1,3 +1,22 @@
+@props([
+    'title'            => 'Cakra Inovasi Digital — Jasa Pembuatan Website Profesional',
+    'metaDescription'  => 'Jasa pembuatan website, sistem ERP custom, dan aplikasi bisnis untuk UMKM hingga perusahaan di Indonesia.',
+    'canonical'        => url()->current(),
+    'ogTitle'          => null,
+    'ogDescription'    => null,
+    'ogImage'          => null,
+    'ogType'           => 'website',
+    'noindex'          => false, // set true di halaman seperti /login, /admin, dst
+])
+ 
+@php
+    // Fallback berlapis: kalau child view tidak kirim og:title/og:description,
+    // pakai title/metaDescription biasa. Kalau ogImage kosong, pakai default global.
+    $resolvedOgTitle       = $ogTitle ?? $title;
+    $resolvedOgDescription = $ogDescription ?? $metaDescription;
+    $resolvedOgImage       = $ogImage ?? asset('images/default-og-cakra.jpg');
+@endphp
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -44,7 +63,7 @@
     {{-- ================================================================
          CORE SEO META
     ================================================================ --}}
-    <title>{{ $title ?? 'Jasa Pembuatan Website Profesional | Cakra Inovasi Digital' }}</title>
+    <title>{{ isset($title) ? $title : 'Jasa Pembuatan Website Profesional | Cakra Inovasi Digital' }}</title>
     <meta name="description"
         content="{{ $metaDescription ?? 'Cakra Inovasi Digital menyediakan jasa pembuatan website profesional: website automasi bisnis, kasir digital, point of sale, stok gudang, sistem manajemen bisnis, katalog, company profile, toko online, dan lainnya. Hubungi kami sekarang.' }}">
     <meta name="keywords"

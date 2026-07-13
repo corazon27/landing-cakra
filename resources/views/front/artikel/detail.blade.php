@@ -1,31 +1,37 @@
-<x-layout.app>
+@php
+    $metaDescription = $article->meta_description
+        ?: Str::of(strip_tags($article->content))->squish()->limit(155);
 
-    {{-- ================================================================
-     SEO DINAMIS — Artikel Detail
-     $ogTitle, $ogDescription, $ogImage di-set di sini agar
-     terbaca oleh app.blade.php sebelum <head> di-render
-     (karena Blade component slot di-render sebelum layout)
-    ================================================================ --}}
-    @php
-        // 1. Hitung deskripsi sekali saja untuk menghemat proses CPU
-        $metaDescription = Str::limit(strip_tags($article->content), 155);
-        
-        $title = $article->title . ' | Cakra Inovasi Digital';
-        $metaKeywords = 'blog cakra inovasi digital, ' . Str::lower($article->title) . ', tips bisnis digital, website umkm';
-        $canonicalUrl = route('front.artikel.detail', $article->slug);
-        $ogType = 'article';
+    $title         = $article->title . ' | Cakra Inovasi Digital';
+    $canonicalUrl  = route('front.artikel.detail', $article->slug);
+    $ogType        = 'article';
 
-        // Open Graph Dinamis — thumbnail artikel sebagai OG image
-        $ogTitle = $article->title;
-        $ogDescription = $metaDescription;
-        $ogImage = asset('storage/' . $article->thumbnail);
-        $ogImageWidth = '1200';
-        $ogImageHeight = '630';
+    $ogTitle       = $article->title;
+    $ogDescription = $metaDescription;
 
-        // Untuk share WhatsApp & Twitter
-        $shareUrl = urlencode(request()->fullUrl());
-        $shareText = urlencode($article->title . ' — Cakra Inovasi Digital');
-    @endphp
+    // Fallback kalau artikel belum punya thumbnail
+    $ogImage = $article->thumbnail
+        ? asset('storage/' . $article->thumbnail)
+        : asset('images/default-og-cakra.jpg');
+
+    // Alt text: pakai field "Alt Text Gambar (SEO)" dari form kalau diisi,
+    // fallback ke judul artikel kalau kosong
+    $thumbnailAlt = $article->thumbnail_alt ?? $article->title;
+
+    // Untuk share WhatsApp & Twitter
+    $shareUrl  = urlencode(request()->fullUrl());
+    $shareText = urlencode($article->title . ' — Cakra Inovasi Digital');
+@endphp
+
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :canonical="$canonicalUrl"
+    :og-title="$ogTitle"
+    :og-description="$ogDescription"
+    :og-image="$ogImage"
+    :og-type="$ogType"
+>
 
     {{-- ================================================================
         SCHEMA.ORG — BlogPosting / Article
@@ -37,12 +43,10 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": {!! json_encode($article->title) !!},
-        "description": {!! json_encode($metaDescription) !!},
+        "description": {!! json_encode((string) $metaDescription) !!},
         "image": {
             "@type": "ImageObject",
-            "url": {!! json_encode($ogImage) !!},
-            "width": 1200,
-            "height": 630
+            "url": {!! json_encode($ogImage) !!}
         },
         "url": {!! json_encode($canonicalUrl) !!},
         "datePublished": {!! json_encode($article->published_at ? $article->published_at->toIso8601String() : null) !!},
@@ -88,7 +92,7 @@
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Artikel",
-                "item": {!! json_encode(url('/artikel')) !!}
+                "item": {!! json_encode(route('front.artikel.index')) !!}
             },
             {
                 "@type": "ListItem",
@@ -101,6 +105,8 @@
     </script>
 
     {{-- Schema Dinamis Tambahan dari Database (Custom per Artikel) --}}
+    {{-- CATATAN KEAMANAN: field ini di-inject mentah (unescaped). Aman
+         selama hanya admin terpercaya yang mengisi form CMS ini. --}}
     @if($article->schema)
         {!! $article->schema !!}
     @endif
@@ -120,7 +126,7 @@
 
             {{-- Breadcrumb --}}
             <div class="max-w-6xl mx-auto text-center mb-10">
-                <x-breadcrumb :items="[['name' => 'List Artikel', 'url' => url('/artikel')]]" current="Detail Artikel" />
+                <x-breadcrumb :items="[['name' => 'List Artikel', 'url' => route('front.artikel.index')]]" current="Detail Artikel" />
             </div>
 
             {{-- Kategori badge --}}
@@ -168,21 +174,32 @@
                 {{-- ── Konten Artikel ── --}}
                 <div class="flex-1 min-w-0">
 
-                    {{-- Featured Image --}}
+                    {{-- Featured Image
+                         - alt text pakai field form, bukan fallback ke title saja
+                         - width/height eksplisit mencegah layout shift (CLS)
+                         - fetchpriority="high": ini kemungkinan besar elemen LCP halaman
+                    --}}
                     <div class="rounded-3xl overflow-hidden mb-10 shadow-md border border-slate-100" data-aos="fade-up">
-                        <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}" class="w-full h-auto object-cover max-h-[480px]" loading="eager">
+                        <img
+                            src="{{ asset('storage/' . $article->thumbnail) }}"
+                            alt="{{ $thumbnailAlt }}"
+                            width="1200"
+                            height="630"
+                            fetchpriority="high"
+                            loading="eager"
+                            class="w-full h-auto object-cover max-h-[480px]">
                     </div>
 
                     {{-- Share Bar (mobile) --}}
                     <div class="flex items-center gap-3 mb-8 lg:hidden" data-aos="fade-up">
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">Bagikan:</span>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition">
                             <i class="fab fa-facebook-f text-[11px]"></i>
                         </a>
-                        <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition">
+                        <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" rel="noopener" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition">
                             <i class="fab fa-whatsapp text-[11px]"></i>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-black hover:text-white hover:border-black transition">
+                        <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" rel="noopener" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-black hover:text-white hover:border-black transition">
                             <i class="fab fa-x-twitter text-[11px]"></i>
                         </a>
                         <button onclick="copyToClipboard('{{ request()->fullUrl() }}')" class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition cursor-pointer">
@@ -210,13 +227,13 @@
                     <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" data-aos="fade-up">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Share:</span>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1877F2]/10 text-[#1877F2] text-[11px] font-bold rounded-full hover:bg-[#1877F2] hover:text-white transition">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1877F2]/10 text-[#1877F2] text-[11px] font-bold rounded-full hover:bg-[#1877F2] hover:text-white transition">
                                 <i class="fab fa-facebook-f text-[10px]"></i> Facebook
                             </a>
-                            <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 text-[#25D366] text-[11px] font-bold rounded-full hover:bg-[#25D366] hover:text-white transition">
+                            <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366]/10 text-[#25D366] text-[11px] font-bold rounded-full hover:bg-[#25D366] hover:text-white transition">
                                 <i class="fab fa-whatsapp text-[10px]"></i> WhatsApp
                             </a>
-                            <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 text-[11px] font-bold rounded-full hover:bg-slate-900 hover:text-white transition">
+                            <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 text-[11px] font-bold rounded-full hover:bg-slate-900 hover:text-white transition">
                                 <i class="fab fa-x-twitter text-[10px]"></i> Twitter
                             </a>
                             <button onclick="copyToClipboard('{{ request()->fullUrl() }}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 text-[11px] font-bold rounded-full hover:bg-slate-800 hover:text-white transition cursor-pointer">
@@ -276,7 +293,7 @@
                     {{-- Author Box --}}
                     <div class="mt-10 bg-gradient-to-br from-slate-50 to-blue-50/30 p-7 rounded-3xl border border-slate-100 flex items-center gap-5" data-aos="fade-up">
                         <div class="w-16 h-16 rounded-2xl overflow-hidden bg-blue-100 shrink-0 shadow-sm">
-                            <img src="{{ asset('images/logo-cakra.webp') }}" alt="Cakra Inovasi Digital" class="w-full h-full object-cover">
+                            <img src="{{ asset('images/logo-cakra.webp') }}" alt="Cakra Inovasi Digital" width="64" height="64" loading="lazy" class="w-full h-full object-cover">
                         </div>
                         <div>
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ditulis oleh</p>
@@ -298,7 +315,7 @@
                             @foreach($related_posts as $related)
                             <a href="{{ route('front.artikel.detail', $related->slug) }}" class="group flex items-start gap-4 p-4 rounded-2xl border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all">
                                 <div class="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-xl overflow-hidden bg-slate-100">
-                                    <img src="{{ asset('storage/' . $related->thumbnail) }}" alt="{{ $related->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+                                    <img src="{{ asset('storage/' . $related->thumbnail) }}" alt="{{ $related->thumbnail_alt ?? $related->title }}" width="96" height="96" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="text-sm font-bold text-slate-800 group-hover:text-blue-600 leading-snug line-clamp-2 transition mb-2">
@@ -343,7 +360,7 @@
                             <p class="text-blue-100 text-xs leading-relaxed mb-4">
                                 Konsultasi gratis, tanpa syarat. Kami bantu pilih solusi yang tepat untuk bisnis Anda.
                             </p>
-                            <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20baca%20artikel%20%22{{ urlencode($article->title) }}%22%20dan%20tertarik%20konsultasi%20website." target="_blank" class="inline-flex items-center gap-2 bg-white text-blue-600 px-4 py-2.5 rounded-xl text-xs font-black hover:bg-blue-50 transition w-full justify-center">
+                            <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20baca%20artikel%20%22{{ urlencode($article->title) }}%22%20dan%20tertarik%20konsultasi%20website." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white text-blue-600 px-4 py-2.5 rounded-xl text-xs font-black hover:bg-blue-50 transition w-full justify-center">
                                 <i class="fab fa-whatsapp text-emerald-500 text-sm"></i>
                                 Konsultasi Gratis Sekarang
                             </a>
@@ -370,16 +387,17 @@
                                 Ikuti Kami
                             </h3>
                             <div class="grid grid-cols-4 gap-2">
-                                <a href="https://www.facebook.com/cakrainovasidigital" target="_blank" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition text-sm">
+                                <a href="https://www.facebook.com/cakrainovasidigital" target="_blank" rel="noopener" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition text-sm">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="https://www.instagram.com/cakrainovasidigital.id/" target="_blank" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white hover:border-transparent transition text-sm">
+                                <a href="https://www.instagram.com/cakrainovasidigital.id/" target="_blank" rel="noopener" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white hover:border-transparent transition text-sm">
                                     <i class="fab fa-instagram"></i>
                                 </a>
-                                <a href="https://www.linkedin.com/in/cakra-inovasi-digital-9141943b3/" target="_blank" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition text-sm">
+                                <a href="https://www.linkedin.com/in/cakra-inovasi-digital-9141943b3/" target="_blank" rel="noopener" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition text-sm">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
-                                <a href="#" target="_blank" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000] transition text-sm">
+                                {{-- Link YouTube masih "#" — ganti dengan URL asli atau hapus ikon ini kalau belum punya channel --}}
+                                <a href="#" target="_blank" rel="noopener" class="h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 text-slate-500 hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000] transition text-sm">
                                     <i class="fab fa-youtube"></i>
                                 </a>
                             </div>
@@ -395,7 +413,7 @@
                                 @forelse($popularArticles as $index => $pop)
                                 <div class="flex gap-3 items-center group">
                                     <div class="w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-50">
-                                        <img src="{{ asset('storage/' . $pop->thumbnail) }}" alt="{{ $pop->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" loading="lazy">
+                                        <img src="{{ asset('storage/' . $pop->thumbnail) }}" alt="{{ $pop->thumbnail_alt ?? $pop->title }}" width="64" height="64" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" loading="lazy">
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <a href="{{ route('front.artikel.detail', $pop->slug) }}">
@@ -433,15 +451,15 @@
     <div id="desktop-floating-share" class="fixed left-5 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-2.5 z-40 transition-all duration-500 transform">
         <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest text-center mb-1">Share</span>
 
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] hover:-translate-y-1 transition-all duration-300" title="Share ke Facebook">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] hover:-translate-y-1 transition-all duration-300" title="Share ke Facebook">
             <i class="fab fa-facebook-f text-xs"></i>
         </a>
 
-        <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] hover:-translate-y-1 transition-all duration-300" title="Share ke WhatsApp">
+        <a href="https://api.whatsapp.com/send?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" rel="noopener" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] hover:-translate-y-1 transition-all duration-300" title="Share ke WhatsApp">
             <i class="fab fa-whatsapp text-sm"></i>
         </a>
 
-        <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-black hover:text-white hover:border-black hover:-translate-y-1 transition-all duration-300" title="Share ke X">
+        <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" rel="noopener" class="w-10 h-10 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 hover:bg-black hover:text-white hover:border-black hover:-translate-y-1 transition-all duration-300" title="Share ke X">
             <i class="fab fa-x-twitter text-xs"></i>
         </a>
 
@@ -450,7 +468,7 @@
         </button>
     </div>
 
-    {{-- Back to Top (dengan ID & inisialisasi awal hidden/invisible) --}}
+    {{-- Back to Top --}}
     <button id="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed right-6 bottom-28 w-11 h-11 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 flex items-center justify-center hover:bg-blue-700 hover:-translate-y-1 transition-all duration-500 z-[9998] cursor-pointer opacity-0 pointer-events-none translate-y-5" title="Kembali ke atas">
         <i class="fa-solid fa-chevron-up text-sm"></i>
     </button>
@@ -460,9 +478,6 @@
     ================================================================ --}}
     @push('scripts')
     <script>
-        /**
-         * Fungsi Menyalin Tautan & Menampilkan Toast Alert
-         */
         function copyToClipboard(text) {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -471,10 +486,9 @@
                     console.error('Gagal menyalin tautan: ', err);
                 });
             } else {
-                // Fallback untuk browser lawas
                 const textArea = document.createElement("textarea");
                 textArea.value = text;
-                textArea.style.position = "fixed"; 
+                textArea.style.position = "fixed";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
@@ -482,44 +496,37 @@
                     document.execCommand('copy');
                     showToast();
                 } catch (err) {
-                    console.error('Fallback gagl menyalin: ', err);
+                    console.error('Fallback gagal menyalin: ', err);
                 }
                 document.body.removeChild(textArea);
             }
         }
 
         function showToast() {
-            // Hapus toast lama jika user klik berulang kali
             const oldToast = document.getElementById('clipboard-toast');
             if (oldToast) oldToast.remove();
 
-            // Render toast element dengan Tailwind
             const toast = document.createElement('div');
             toast.id = 'clipboard-toast';
             toast.className = 'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-xl z-[9999] flex items-center gap-2 transition-all duration-300 opacity-0 translate-y-2';
             toast.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i> Link berhasil disalin ke clipboard!';
-            
+
             document.body.appendChild(toast);
 
-            // Trigger transisi masuk
             setTimeout(() => {
                 toast.classList.remove('opacity-0', 'translate-y-2');
             }, 10);
 
-            // Sembunyikan dan hapus toast setelah 2.5 detik
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => toast.remove(), 300);
             }, 2500);
         }
 
-        /**
-         * Efek Dinamis Sinking/Tenggelam Sebelum Menyentuh Footer
-         */
         document.addEventListener('DOMContentLoaded', function() {
             const floatingShare = document.getElementById('desktop-floating-share');
             const backToTop = document.getElementById('back-to-top-btn');
-            const footer = document.querySelector('footer'); // Mengidentifikasi element tag footer aplikasi
+            const footer = document.querySelector('footer');
 
             window.addEventListener('scroll', function() {
                 const scrollY = window.scrollY;
@@ -527,23 +534,19 @@
                 const bodyHeight = document.documentElement.scrollHeight;
                 const currentScrollBottom = scrollY + windowHeight;
 
-                // Tentukan threshold aman / kapan tombol mulai tenggelam
                 let isNearFooter = false;
 
                 if (footer) {
                     const footerTopPosition = footer.getBoundingClientRect().top + scrollY;
-                    // Sink jika jarak tombol mendekati batas atas footer
                     if (currentScrollBottom >= (footerTopPosition - 20)) {
                         isNearFooter = true;
                     }
                 } else {
-                    // Fallback jika tidak memakai tag <footer>, hitung jarak 350px dari dasar dokumen
                     if (bodyHeight - currentScrollBottom <= 350) {
                         isNearFooter = true;
                     }
                 }
 
-                // Kontrol State Floating Share (Desktop Kiri)
                 if (floatingShare) {
                     if (isNearFooter) {
                         floatingShare.classList.add('opacity-0', 'pointer-events-none', 'translate-y-12');
@@ -552,9 +555,7 @@
                     }
                 }
 
-                // Kontrol State Back to Top (Kanan Bawah)
                 if (backToTop) {
-                    // Muncul hanya jika sudah scroll lebih dari 400px DAN tidak berada di dekat footer
                     if (scrollY > 400 && !isNearFooter) {
                         backToTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-5');
                     } else {

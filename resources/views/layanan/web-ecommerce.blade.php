@@ -1,12 +1,4 @@
-<x-layout.app>
-
-    {{-- ============================================================
-         SEO: Meta halaman /layanan/web-ecommerce
-         Target keyword: "jasa pembuatan website toko online",
-         "jasa web ecommerce Indonesia", "toko online profesional",
-         "website jualan online UMKM", "platform belanja online custom"
-    ============================================================ --}}
-    @php
+@php
     $title = 'Jasa Pembuatan Website Toko Online & E-Commerce Profesional | Cakra Inovasi Digital';
     $metaDescription = 'Jasa pembuatan website toko online & e-commerce profesional — tampilkan produk, terima
     pembayaran otomatis, kelola pesanan dari satu dashboard. Cocok untuk UMKM, brand lokal, dan bisnis retail Indonesia.
@@ -16,7 +8,24 @@
     website ecommerce laravel';
     $ogType = 'website';
     $canonicalUrl = url('/layanan/web-ecommerce');
+@endphp
 
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    {{-- ============================================================
+         SEO: Meta halaman /layanan/web-ecommerce
+         Target keyword: "jasa pembuatan website toko online",
+         "jasa web ecommerce Indonesia", "toko online profesional",
+         "website jualan online UMKM", "platform belanja online custom"
+    ============================================================ --}}
+    @php
     $faqsData = [
     ['question' => 'Apa bedanya website toko online dengan marketplace seperti Tokopedia atau Shopee?',
     'answer' => 'Marketplace seperti Tokopedia/Shopee memang gratis, tapi Anda bersaing langsung dengan ribuan penjual

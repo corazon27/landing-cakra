@@ -6,7 +6,12 @@
 @endphp
 
 {{-- FIX 1: Mengirimkan variabel SEO sebagai props ke layout --}}
-<x-layout.app :title="$title" :metaDescription="$metaDescription" :metaKeywords="$metaKeywords" :ogType="$ogType">
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+>
 
     {{-- ============================================================
       SEO: Schema ItemList — daftar portofolio untuk Google (Dinamis)
