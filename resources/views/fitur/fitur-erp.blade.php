@@ -1,13 +1,22 @@
-<x-layout.app>
-
-    @php
-    $title = 'Harga & Perbandingan Fitur Sistem ERP | Cakra Inovasi Digital';
+@php
+$title = 'Harga & Perbandingan Fitur Sistem ERP | Cakra Inovasi Digital';
     $metaDescription = 'Bandingkan harga dan fitur lengkap paket sistem ERP Cakra Inovasi Digital — Starter,
     Professional, hingga Enterprise. Transparan, tanpa biaya tersembunyi.';
     $metaKeywords = 'harga sistem ERP, paket software ERP UMKM, perbandingan fitur ERP, sistem manajemen bisnis
     Indonesia, harga ERP kustom';
     $ogType = 'website';
     $canonicalUrl = url('/fitur/web-erp');
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    @php
 
     $faqsData = [
     ['question' => 'Apakah saya bisa upgrade paket di kemudian hari?', 'answer' => 'Tentu. Anda bisa upgrade ke paket

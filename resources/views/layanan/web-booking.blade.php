@@ -1,12 +1,5 @@
-<x-layout.app>
-
-    {{-- ============================================================
-         SEO: Meta halaman /layanan/web-booking
-         Target keyword: "jasa website sistem booking", "aplikasi reservasi online",
-         "website booking appointment", "sistem reservasi bisnis"
-    ============================================================ --}}
-    @php
-    $title = 'Jasa Pembuatan Website Sistem Booking & Reservasi Online | Cakra Inovasi Digital';
+@php
+$title = 'Jasa Pembuatan Website Sistem Booking & Reservasi Online | Cakra Inovasi Digital';
     $metaDescription = 'Jasa pembuatan website sistem booking & reservasi online profesional — otomatiskan jadwal,
     kurangi no-show, dan kelola appointment bisnis Anda 24 jam. Cocok untuk klinik, salon, homestay, lapangan olahraga,
     dan UMKM jasa. Konsultasi gratis!';
@@ -15,7 +8,23 @@
     Sukoharjo, Jawa Tengah, UMKM Indonesia';
     $ogType = 'website';
     $canonicalUrl = url('/layanan/web-booking');
+@endphp
 
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    {{-- ============================================================
+         SEO: Meta halaman /layanan/web-booking
+         Target keyword: "jasa website sistem booking", "aplikasi reservasi online",
+         "website booking appointment", "sistem reservasi bisnis"
+    ============================================================ --}}
+    @php
+    
     $faqsData = [
     ['question' => 'Bisnis apa saja yang cocok menggunakan sistem booking online?',
     'answer' => 'Sistem booking online cocok untuk berbagai jenis bisnis jasa: klinik & dokter, salon & barbershop, spa

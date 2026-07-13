@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Harga & Perbandingan Paket Website Katalog Produk | Cakra Inovasi Digital';
     $metaDescription = 'Bandingkan harga dan fitur lengkap paket website katalog produk digital Cakra Inovasi Digital —
     Starter, Professional, hingga Enterprise. Transparan, tanpa biaya tersembunyi.';
@@ -9,6 +7,14 @@
     $ogType = 'website';
     $canonicalUrl = url('/fitur/web-katalog-produk');
     @endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
 
     @php
     $faqsData = [

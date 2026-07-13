@@ -1,4 +1,21 @@
-<x-layout.app>
+@php
+$title = 'Jasa Pembuatan Website Katalog Produk Digital Profesional | Cakra Inovasi Digital';
+    $metaDescription= 'Jasa pembuatan website katalog produk digital — tampilkan ratusan produk secara profesional,
+    terima order via WhatsApp 1 klik, dan update katalog mandiri kapan saja. Tanpa ribet kirim foto manual. Konsultasi
+    gratis!';
+    $metaKeywords = 'jasa website katalog produk, katalog digital online, brosur digital interaktif, website katalog
+    UMKM, katalog produk WhatsApp, web developer Sukoharjo, Jawa Tengah, katalog produk Indonesia';
+    $ogType = 'website';
+    $canonicalUrl = url('/layanan/web-katalog-produk');
+@enphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
 
     {{-- ============================================================
          SEO: Meta halaman /layanan/web-katalog-produk
@@ -7,15 +24,6 @@
          "katalog produk WhatsApp", "brosur digital interaktif"
     ============================================================ --}}
     @php
-    $title = 'Jasa Pembuatan Website Katalog Produk Digital Profesional | Cakra Inovasi Digital';
-    $metaDescription= 'Jasa pembuatan website katalog produk digital — tampilkan ratusan produk secara profesional,
-    terima order via WhatsApp 1 klik, dan update katalog mandiri kapan saja. Tanpa ribet kirim foto manual. Konsultasi
-    gratis!';
-    $metaKeywords = 'jasa website katalog produk, katalog digital online, brosur digital interaktif, website katalog
-    UMKM, katalog produk WhatsApp, web developer Sukoharjo, Jawa Tengah, katalog produk Indonesia';
-    $ogType = 'website';
-    $canonicalUrl = url('/layanan/web-katalog-produk');
-
     $faqsData = [
     ['question' => 'Apa bedanya website katalog produk dengan toko online (e-commerce)?',
     'answer' => 'Website katalog menampilkan produk secara profesional lengkap dengan foto, deskripsi, dan harga — namun

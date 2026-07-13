@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     // --- SEO & Metadata ---
     $title = 'Layanan Jasa Pembuatan Website Profesional | Cakra Inovasi Digital';
     $metaDescription = 'Cakra Inovasi Digital menyediakan layanan ekosistem digital untuk UMKM: Katalog Produk, Sistem
@@ -9,7 +7,14 @@
     website manajemen Bisnis ERP, web developer Magelang';
     $ogType = 'website';
     // $suffix = ' | Cakra Digital'; // Uncomment jika dibutuhkan
-    @endphp
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+>
 
     {{-- --- Data Structures (Single Source of Truth) --- --}}
     @php

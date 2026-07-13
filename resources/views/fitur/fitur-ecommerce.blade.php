@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Harga & Perbandingan Paket Website Toko Online & E-Commerce | Cakra Inovasi Digital';
     $metaDescription = 'Bandingkan harga dan fitur lengkap paket website toko online & e-commerce Cakra Inovasi Digital
     — Starter, Professional, hingga Enterprise. Transparan, tanpa biaya tersembunyi. Cocok untuk UMKM Indonesia.';
@@ -9,6 +7,14 @@
     $ogType = 'website';
     $canonicalUrl = url('/fitur/web-ecommerce');
     @endphp
+    
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
 
     @php
     // Memasukkan format HTML cantik ke dalam PHP array $faqsData agar rapi

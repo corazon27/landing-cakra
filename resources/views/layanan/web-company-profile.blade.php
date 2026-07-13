@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Jasa Pembuatan Website Company Profile Profesional | Cakra Inovasi Digital';
     $metaDescription = 'Jasa pembuatan website company profile profesional — tampilkan kredibilitas bisnis Anda, raih
     kepercayaan klien baru, dan hadir di halaman pertama Google. Desain modern, SEO-ready, dashboard admin mandiri.
@@ -9,7 +7,17 @@
     website bisnis UMKM, jasa web developer Sukoharjo, Jawa Tengah, company profile online';
     $ogType = 'website';
     $canonicalUrl = url('/layanan/web-perusahaan');
+@endphp
 
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    @php
     $faqsData = [
     ['question' => 'Apa perbedaan website company profile dengan website biasa?', 'answer' => 'Website company profile
     dirancang khusus untuk membangun kredibilitas dan kepercayaan — menampilkan profil perusahaan, layanan, portfolio,

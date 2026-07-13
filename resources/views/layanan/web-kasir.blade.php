@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Jasa Pembuatan Website Toko Online & Kasir Digital (POS) | Cakra Inovasi Digital';
     $metaDescription = 'Solusi sistem kasir digital (POS) dan toko online untuk UMKM. Kelola stok, transaksi penjualan,
     dan laporan keuangan real-time dari HP. Cakra Inovasi Digital, Magelang. Tinggalkan rekap manual! Jasa pembuatan
@@ -17,7 +15,15 @@
     ['name' => 'Layanan', 'url' => url('/layanan')],
     ['name' => 'Website Toko Online / POS', 'url' => url('/layanan/web-kasir')],
     ];
-    @endphp
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :breadcrumbs="$breadcrumbs"
+>
 
     @php
     $faqsData = [

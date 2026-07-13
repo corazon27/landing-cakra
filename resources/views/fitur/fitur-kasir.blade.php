@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Harga & Perbandingan Paket Sistem Kasir Digital | Cakra Inovasi Digital';
     $metaDescription = 'Bandingkan harga dan fitur paket sistem kasir digital Cakra Inovasi Digital — mulai dari skema
     per transaksi hingga langganan versi web. Transparan, tanpa biaya tersembunyi.';
@@ -13,6 +11,14 @@
     ['name' => 'Fitur Web Kasir Digital / POS', 'url' => url('/fitur/web-kasir')],
     ];
     @endphp
+    
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :breadcrumbs="$breadcrumbs"
+>
 
     @php
     $faqsData = [

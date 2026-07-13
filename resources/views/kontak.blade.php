@@ -1,9 +1,4 @@
-<x-layout.app>
-
-    {{-- ============================================================
-     SEO: Meta halaman /hubungi-kami
-============================================================ --}}
-    @php
+@php
     $title = 'Hubungi Kami — Konsultasi Gratis Jasa Website | Cakra Inovasi Digital';
     $metaDescription= 'Hubungi Cakra Inovasi Digital untuk konsultasi gratis jasa pembuatan website. Kami siap membantu
     Anda go-digital. Hubungi via WhatsApp, email, atau formulir kontak — respon cepat!';
@@ -11,7 +6,19 @@
     Tengah, tanya jasa website Indonesia';
     $ogType = 'website';
     $canonicalUrl = url('/hubungi-kami');
+@endphp
 
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+>
+
+    {{-- ============================================================
+     SEO: Meta halaman /hubungi-kami
+============================================================ --}}
+    @php
 
     $faqsData = [
     [

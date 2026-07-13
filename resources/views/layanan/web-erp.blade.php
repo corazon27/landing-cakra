@@ -1,6 +1,4 @@
-<x-layout.app>
-
-    @php
+@php
     $title = 'Jasa Pembuatan Website Sistem Manajemen Bisnis (ERP) | Cakra Inovasi Digital';
     $metaDescription = 'Jasa pembuatan sistem ERP profesional — integrasikan keuangan, stok, SDM, produksi, dan laporan
     bisnis dalam satu platform terpusat. Kustom sesuai proses kerja Anda. Konsultasi gratis!';
@@ -8,7 +6,17 @@
     manajemen stok terpadu, web developer ERP Sukoharjo, Jawa Tengah, ERP Indonesia';
     $ogType = 'website';
     $canonicalUrl = url('/layanan/web-erp');
+@endphp
 
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :canonical-url="$canonicalUrl"
+>
+
+    @php
     $faqsData = [
     ['question' => 'Apa itu sistem ERP dan apakah bisnis saya butuh ERP?', 'answer' => 'ERP (Enterprise Resource
     Planning) adalah sistem terpadu yang menghubungkan semua proses bisnis — keuangan, stok, SDM, penjualan, dan
