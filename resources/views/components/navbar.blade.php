@@ -24,7 +24,7 @@ $layananMenu = [
                     lebih tinggi dari device pixel ratio 1x, tanpa membawa balik
                     ukuran berlebih seperti file lama.
                 --}}
-                <img src="{{ asset('images/logo-cakra-alt-400.webp') }}" alt="Logo Cakra Inovasi Digital" width="320"
+                <img src="{{ asset('images/logo-cakra-alt-400.avif') }}" alt="Logo Cakra Inovasi Digital" width="320"
                     height="320" fetchpriority="high" class="h-42 md:h-52 w-auto object-contain">
             </a>
 
