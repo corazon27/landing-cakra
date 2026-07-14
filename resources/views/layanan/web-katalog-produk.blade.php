@@ -7,7 +7,7 @@ $title = 'Jasa Pembuatan Website Katalog Produk Digital Profesional | Cakra Inov
     UMKM, katalog produk WhatsApp, web developer Sukoharjo, Jawa Tengah, katalog produk Indonesia';
     $ogType = 'website';
     $canonicalUrl = url('/layanan/web-katalog-produk');
-@enphp
+@endphp
 
 <x-layout.app 
     :title="$title" 
