@@ -1199,6 +1199,7 @@
 
         const createSwiper = () => {
             new Swiper('.testimonial-swiper', {
+            modules: [SwiperModules.Navigation, SwiperModules.Pagination],
                 slidesPerView: 1,
                 spaceBetween: 20,
                 loop: true,
