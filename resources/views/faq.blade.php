@@ -1,4 +1,16 @@
-<x-layout.app>
+@php
+    $title = 'FAQ & Tanya Jawab Jasa Pembuatan Website & Software UMKM | Cakra Inovasi Digital';
+    $metaDescription = 'Punya pertanyaan seputar pembuatan website, aplikasi digital, atau software UMKM? Temukan jawaban lengkap mengenai harga, sistem cicilan, dan garansi kami di sini.';
+    $metaKeywords = 'faq jasa website, tanya jawab aplikasi umkm, biaya pembuatan software bisnis, garansi bikin web, cakra inovasi digital, custom aplikasi web';
+    $ogType = 'website';
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+>
 
     <section class="py-20 bg-white overflow-hidden">
         <div class="max-w-6xl mx-auto px-10 text-center">
@@ -24,6 +36,7 @@
                 </ol>
             </nav>
         </div>
+        
         <div class="max-w-6xl mx-auto px-10">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2" data-aos="fade-right">
@@ -74,8 +87,7 @@
                     <div class="px-6 pb-6 text-slate-600 text-sm leading-relaxed">
                         Bisa banget! Kami nggak cuma kasih aplikasinya terus hilang. Kami bakal nemenin dan ajarin
                         pelan-pelan sampai Anda atau tim beneran mahir pakainya. Kalau lupa cara pakainya, tinggal WA
-                        aja,
-                        kami siap bantu.
+                        aja, kami siap bantu.
                     </div>
                 </div>
 
@@ -122,6 +134,5 @@
             </div>
         </div>
     </section>
-
 
 </x-layout.app>

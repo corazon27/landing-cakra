@@ -1,7 +1,7 @@
 @php
     $title = 'Portofolio Website & Sistem Digital | Cakra Inovasi Digital';
-    $metaDescription = 'Lihat hasil kerja nyata Cakra Inovasi Digital — portofolio website automasi bisnis, company profile, kasir digital POS, katalog produk, dan aplikasi kustom untuk UMKM di seluruh Indonesia.';
-    $metaKeywords = 'portofolio website, hasil kerja jasa website, website UMKM, kasir digital, toko online, company profile, Cakra Inovasi Digital';
+    $metaDescription = 'Lihat hasil kerja nyata Cakra Inovasi Digital — portofolio website automasi bisnis, company profile, kasir digital POS, katalog produk, landing page, dan aplikasi kustom untuk UMKM di seluruh Indonesia.';
+    $metaKeywords = 'portofolio website, hasil kerja jasa website, website UMKM, kasir digital, toko online, company profile, landing page, dan website automasi bisnis(ERP) di Cakra Inovasi Digital';
     $ogType = 'website';
 @endphp
 
