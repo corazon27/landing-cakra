@@ -1199,6 +1199,7 @@
 
         const createSwiper = () => {
             new Swiper('.testimonial-swiper', {
+                modules: [SwiperModules.Navigation, SwiperModules.Pagination, SwiperModules.Autoplay],
                 slidesPerView: 1,
                 spaceBetween: 20,
                 loop: true,
@@ -1223,17 +1224,16 @@
             const io = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        initSwiperInstance();
+                        createSwiper();           // ← diperbaiki, samakan dengan nama function-nya
                         obs.disconnect();
                     }
                 });
             }, { threshold: 0.15 });
             io.observe(target);
         } else {
-            // Fallback: attempt initialize after DOMContentLoaded idle
             document.addEventListener('DOMContentLoaded', () => {
-                if ('requestIdleCallback' in window) requestIdleCallback(initSwiperInstance, { timeout: 1500 });
-                else setTimeout(initSwiperInstance, 1500);
+                if ('requestIdleCallback' in window) requestIdleCallback(createSwiper, { timeout: 1500 });  // ← diperbaiki
+                else setTimeout(createSwiper, 1500);  // ← diperbaiki
             });
         }
     });
