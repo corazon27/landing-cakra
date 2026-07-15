@@ -10,8 +10,6 @@
 ])
  
 @php
-    // Fallback berlapis: kalau child view tidak kirim og:title/og:description,
-    // pakai title/metaDescription biasa. Kalau ogImage kosong, pakai default global.
     $resolvedOgTitle       = $ogTitle ?? $title;
     $resolvedOgDescription = $ogDescription ?? $metaDescription;
     $resolvedOgImage       = $ogImage ?? asset('images/default-og-cakra.jpg');
@@ -27,10 +25,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{-- ============================================================
-         Deteksi kebutuhan Livewire di sini, self-contained.
-         Livewire cuma dipakai di halaman detail artikel (fitur komentar).
-    ============================================================ --}}
     @php
         $needsLivewire = request()->routeIs('front.artikel.detail');
     @endphp
@@ -243,31 +237,50 @@
         fetchpriority="high">
 
     {{-- ============================================================
-         PERBAIKAN (Font display insight): preload 2 file font icon
-         FontAwesome yang kena flag di PageSpeed. Ini mempercepat
-         network fetch-nya tanpa perlu ubah font-display — icon font
-         tidak butuh FOUT/swap karena tidak ada fallback yang readable.
+         PERBAIKAN (Font display + Reduce unused CSS): preload font
+         icon SUBSET lokal (bukan CDN lagi) — cuma ~170 glyph yang
+         benar-benar dipakai, jauh lebih kecil dari full font CDN.
     ============================================================ --}}
     <link rel="preload" as="font" type="font/woff2"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/webfonts/fa-solid-900.woff2"
+        href="{{ asset('fonts/fontawesome/fa-solid-900.woff2') }}"
         crossorigin>
     <link rel="preload" as="font" type="font/woff2"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/webfonts/fa-brands-400.woff2"
+        href="{{ asset('fonts/fontawesome/fa-brands-400.woff2') }}"
         crossorigin>
 
     {{-- ============================================================
          CSS pihak ketiga — Non-blocking
-         PERBAIKAN (Reduce unused JavaScript): Swiper & Alpine SUDAH
-         DIPINDAH ke resources/js/app.js (di-bundle via Vite, tree-shaken
-         supaya cuma modul Swiper yang dipakai yang ikut ter-load —
-         hemat ~41 KiB dibanding bundle CDN penuh). Baris CDN untuk
-         keduanya DIHAPUS dari sini supaya tidak double-load.
-         FontAwesome & AOS tetap dari CDN (belum ada rencana bundling).
     ============================================================ --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     </noscript>
+
+    {{-- ============================================================
+         PERBAIKAN (Reduce unused CSS / font payload): override sumber
+         font FontAwesome ke file SUBSET lokal (hasil `subset-fa.cjs`).
+         CSS aturan class (.fa-rocket:before, dll) tetap dari CDN di
+         atas — cuma FILE FONT-nya yang dialihkan ke versi ringkas ini.
+         Ditaruh SETELAH link CDN supaya deklarasi ini yang menang
+         (font-face terakhir untuk family+weight yang sama akan dipakai
+         browser, terlepas dari kapan resource-nya selesai di-load).
+    ============================================================ --}}
+    <style>
+    @font-face {
+        font-family: 'Font Awesome 6 Free';
+        font-style: normal;
+        font-weight: 900;
+        font-display: block;
+        src: url('{{ asset('fonts/fontawesome/fa-solid-900.woff2') }}') format('woff2');
+    }
+    @font-face {
+        font-family: 'Font Awesome 6 Brands';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url('{{ asset('fonts/fontawesome/fa-brands-400.woff2') }}') format('woff2');
+    }
+    </style>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" media="print"
         onload="this.media='all'">
