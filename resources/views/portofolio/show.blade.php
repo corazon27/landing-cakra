@@ -1,4 +1,25 @@
-<x-layout.app>
+@php
+    // Membuat Title Tag dinamis berdasarkan judul proyek dan kategorinya
+    $title = $portfolio->judul . ' - Portofolio ' . $portfolio->kategori . ' | Cakra Inovasi Digital';
+    
+    // Mengamankan deskripsi singkat agar bersih dari tag HTML dan dibatasi sesuai standar SEO (~150 karakter)
+    $metaDescription = \Illuminate\Support\Str::limit(strip_tags($portfolio->deskripsi_singkat), 150, '...');
+    
+    // Membuat Keywords dinamis dengan menggabungkan kategori proyek dan Tech Stack yang digunakan
+    $techKeywords = !empty($portfolio->tech_stack) ? ', ' . implode(', ', $portfolio->tech_stack) : '';
+    $metaKeywords = 'portofolio ' . strtolower($portfolio->kategori) . ', pembuatan aplikasi ' . strtolower($portfolio->kategori) . ', software umkm, cakra inovasi digital' . $techKeywords;
+    
+    $ogType = 'article';
+    $ogImage = $portfolio->gambar ? asset('storage/portofolio/' . $portfolio->gambar) : null;
+@endphp
+
+<x-layout.app 
+    :title="$title" 
+    :meta-description="$metaDescription" 
+    :meta-keywords="$metaKeywords" 
+    :og-type="$ogType"
+    :og-image="$ogImage"
+>
     <main class="bg-slate-50/50 min-h-screen pt-32 pb-20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -55,8 +76,7 @@
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                         <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base"></i> Masalah Klien /
-                            Pain
-                            Points
+                            Pain Points
                         </h2>
                         <ul class="space-y-3">
                             @foreach($portfolio->pain_points as $point)
@@ -103,11 +123,10 @@
                                     <i class="fa-solid fa-user-tie"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Nama Klien
-                                        /
-                                        Industri</p>
-                                    <p class="text-sm font-bold text-slate-800">{{ $portfolio->klien_industri ?? '-' }}
+                                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                        Nama Klien / Industri
                                     </p>
+                                    <p class="text-sm font-bold text-slate-800">{{ $portfolio->klien_industri ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -118,13 +137,14 @@
                                     <i class="fa-solid fa-calendar-days"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Durasi
-                                        Pengerjaan</p>
+                                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                        Durasi Pengerjaan
+                                    </p>
                                     <p class="text-sm font-bold text-slate-800">{{ $portfolio->durasi ?? '-' }}</p>
                                 </div>
                             </div>
 
-                            {{-- Demo Live Link (Opsional jika Anda berencana menambahkannya nanti) --}}
+                            {{-- Demo Live Link --}}
                             @if(!empty($portfolio->live_url))
                             <a href="{{ $portfolio->live_url }}" target="_blank"
                                 class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-3.5 px-4 rounded-xl transition-all shadow-md shadow-blue-100 hover:shadow-lg">
@@ -138,8 +158,7 @@
                     {{-- Tech Stack Widget --}}
                     @if(!empty($portfolio->tech_stack))
                     <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Teknologi & Framework
-                        </h3>
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Teknologi & Framework</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($portfolio->tech_stack as $tech)
                             <span
