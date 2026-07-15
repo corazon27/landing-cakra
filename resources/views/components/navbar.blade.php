@@ -1,5 +1,6 @@
 @php
 $layananMenu = [
+['href' => '/layanan/web-landing-page', 'label' => 'Website Landing Page'],
 ['href' => '/layanan/web-katalog-produk', 'label' => 'Website Katalog Produk'],
 ['href' => '/layanan/web-kasir', 'label' => 'Website Kasir Digital / POS'],
 ['href' => '/layanan/web-company-profile', 'label' => 'Website Company Profile'],

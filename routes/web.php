@@ -48,6 +48,7 @@ Route::prefix('layanan')->name('layanan.')->group(function () {
     Route::get('/web-booking', function () { return view('layanan.web-booking'); })->name('booking');
     Route::get('/web-ecommerce', function () { return view('layanan.web-ecommerce'); })->name('ecommerce');
     Route::get('/web-erp', function () { return view('layanan.web-erp'); })->name('erp');
+    Route::get('/web-landing-page', function () { return view('layanan.web-landing-page'); })->name('landing-page');
 });
 
 Route::get('/affiliate', function () { return view('affiliate'); })->name('affiliate');

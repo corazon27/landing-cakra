@@ -20,6 +20,22 @@
     @php
     $layanan = [
     [
+    'route' => 'layanan.landing-page',
+    'icon' => '
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+        d="M13 10V3L4 14h7v7l9-11h-7z" />
+    ',
+    'label' => 'Website Landing Page',
+    'tagline' => 'Konversi Trafik Iklan Jadi Pelanggan',
+    'desc' => 'Halaman fokus satu tujuan untuk campaign iklan, pre-order, atau peluncuran produk. Dirancang dengan
+    copywriting persuasif dan loading super cepat agar setiap rupiah budget iklan Anda tidak terbuang percuma.',
+    'fitur' => ['Copywriting berbasis konversi (AIDA/PAS)', 'Integrasi Facebook & TikTok Pixel', 'Optimasi kecepatan
+    loading tinggi', 'Fokus single CTA tanpa distraksi'],
+    'cocok' => 'Iklan Digital, Pre-Order, Event, Personal Branding',
+    'accent' => 'rose',
+    'badge' => 'Terbaru',
+    ],
+    [
     'route' => 'layanan.company-profile',
     // Ikon Gedung/Korporat (SVG Murni)
     'icon' => '
@@ -101,6 +117,9 @@
     'purple' => ['bg' => 'bg-purple-50/80', 'border' => 'border-purple-100', 'icon' => 'text-purple-600', 'badge_bg' =>
     'bg-purple-600', 'badge_text' => 'text-white', 'check' => 'text-purple-500', 'hover' =>
     'group-hover:border-purple-300 group-hover:shadow-purple-100/50', 'btn' => 'text-purple-600 hover:text-purple-800'],
+    'rose' => ['bg' => 'bg-rose-50/80', 'border' => 'border-rose-100', 'icon' => 'text-rose-600', 'badge_bg' =>
+    'bg-rose-500', 'badge_text' => 'text-white', 'check' => 'text-rose-500', 'hover' =>
+    'group-hover:border-rose-300 group-hover:shadow-rose-100/50', 'btn' => 'text-rose-600 hover:text-rose-800'],
     ];
 
     $totalLayanan = count($layanan); // Sekarang akan otomatis jadi 4
@@ -194,7 +213,7 @@
                     @php $a = $accentMap[$item['accent']]; @endphp
 
                     <article
-                        class="group flex flex-col bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-sm hover:shadow-2xl {{ $a['hover'] }} transition-all duration-500 relative overflow-hidden"
+                        class="group flex flex-col bg-white border border-slate-200 rounded-[2rem] p-8 lg:p-10 shadow-sm hover:shadow-2xl {{ $a['hover'] }} transition-all duration-500 relative overflow-hidden {{ $loop->last && $totalLayanan % 2 !== 0 ? 'md:col-span-2 md:max-w-2xl md:mx-auto' : '' }}"
                         data-aos="fade-up" data-aos-delay="{{ ($i % 2) * 150 }}">
 
                         {{-- Background Accent (Subtle) --}}
