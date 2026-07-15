@@ -256,10 +256,13 @@
         crossorigin>
 
     {{-- ============================================================
-         CSS & JS pihak ketiga — Non-blocking
-         PERBAIKAN (Cache lifetimes): Swiper & Alpine di-pin ke versi
-         exact (bukan range @11 / @3.x.x lagi) supaya jsDelivr kasih
-         Cache-Control immutable 1 tahun, bukan cuma 7 jam.
+         CSS pihak ketiga — Non-blocking
+         PERBAIKAN (Reduce unused JavaScript): Swiper & Alpine SUDAH
+         DIPINDAH ke resources/js/app.js (di-bundle via Vite, tree-shaken
+         supaya cuma modul Swiper yang dipakai yang ikut ter-load —
+         hemat ~41 KiB dibanding bundle CDN penuh). Baris CDN untuk
+         keduanya DIHAPUS dari sini supaya tidak double-load.
+         FontAwesome & AOS tetap dari CDN (belum ada rencana bundling).
     ============================================================ --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
@@ -272,19 +275,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     </noscript>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.css" media="print"
-        onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.css">
-    </noscript>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap"
         rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
     </noscript>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.12/dist/cdn.min.js"></script>
 
     <style>
     .font-heading {
@@ -319,7 +314,6 @@
 
     <x-footer />
 
-    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11.2.6/swiper-bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
     <script>
