@@ -40,6 +40,7 @@ Route::get('/fitur-web-ecommerce', function () { return view('fitur.fitur-ecomme
 Route::get('/fitur-web-booking', function () { return view('fitur.fitur-booking'); })->name('fitur.fitur-booking');
 Route::get('/fitur-web-katalog-produk', function () { return view('fitur.fitur-katalog'); })->name('fitur.fitur-katalog');
 Route::get('/fitur-company-profile', function () { return view('fitur.fitur-company-profile'); })->name('fitur.fitur-company-profile');
+Route::get('/fitur-web-landing-page', function () { return view('fitur.fitur-landing-page'); })->name('fitur.fitur-landing-page');
 
 Route::prefix('layanan')->name('layanan.')->group(function () {
     Route::get('/web-company-profile', function () { return view('layanan.web-company-profile'); })->name('company-profile');
