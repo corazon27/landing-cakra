@@ -30,7 +30,7 @@ $contacts = [
         <div class="p-4 space-y-3 bg-white">
             @foreach($contacts as $contact)
             <a href="https://wa.me/{{ $contact['phone'] }}" target="_blank"
-                class="flex items-center justify-between p-4 bg-[#f8f9fa] rounded-xl hover:bg-slate-100 transition-all border-l-4 border-l-[#25D366] group">
+                class="btn-whatsapp-agent flex items-center justify-between p-4 bg-[#f8f9fa] rounded-xl hover:bg-slate-100 transition-all border-l-4 border-l-[#25D366] group" data-agent="{{ $contact['name'] }}">
                 <div class="flex items-center gap-4">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode($contact['name']) }}&background={{ $contact['bg'] }}&color=fff"
                         class="w-12 h-12 rounded-full shadow-sm" alt="{{ $contact['name'] }}">
