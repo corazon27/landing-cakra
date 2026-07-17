@@ -233,7 +233,12 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <link rel="preload" as="image"
+        href="{{ $heroImageMobile ?? asset('images/hero-beranda1-mobile.webp') }}"
+        media="(max-width: 1023px)"
+        fetchpriority="high">
+    <link rel="preload" as="image"
         href="{{ $heroImage ?? asset('images/hero-beranda1.webp') }}"
+        media="(min-width: 1024px)"
         fetchpriority="high">
 
     {{-- ============================================================
