@@ -117,7 +117,7 @@
         </div>
 
         <div
-            class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-500 text-xs">
+            class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-400 text-xs">
             <p>© {{ date('Y') }} Cakra Inovasi Digital. Seluruh hak cipta dilindungi.</p>
             <p>Dibuat dengan <span class="text-red-400" aria-label="cinta">♥</span> di Magelang, Jawa Tengah</p>
         </div>
