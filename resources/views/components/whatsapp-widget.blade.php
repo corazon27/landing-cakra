@@ -1,9 +1,9 @@
 @php
 // Data kontak bisa dipindah ke Controller atau Config jika nanti datanya dinamis
 $contacts = [
-['name' => 'Sakti', 'role' => 'Sales', 'phone' => '6282136405273', 'bg' => '0D8ABC'],
-['name' => 'Iqbal', 'role' => 'Sales', 'phone' => '6282136405273', 'bg' => 'E91E63'],
-['name' => 'Alfian', 'role' => 'Sales', 'phone' => '6282136405273', 'bg' => 'FF9800'],
+['name' => 'Sakti', 'role' => 'Sales', 'phone' => '6285865405330', 'bg' => '0D8ABC'],
+['name' => 'Iqbal', 'role' => 'Sales', 'phone' => '62895630365870', 'bg' => 'E91E63'],
+['name' => 'Alfian', 'role' => 'Sales', 'phone' => '6282136405274', 'bg' => 'FF9800'],
 ];
 @endphp
 
