@@ -2,7 +2,7 @@
     $metaDescription = $article->meta_description
         ?: Str::of(strip_tags($article->content))->squish()->limit(155);
 
-    $title         = $article->title . ' | Cakra Inovasi Digital';
+    $title         = $article->title . ' | CID';
     $canonicalUrl  = route('front.artikel.detail', $article->slug);
     $ogType        = 'article';
 

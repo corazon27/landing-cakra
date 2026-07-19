@@ -2,7 +2,7 @@
          SEO — Halaman List Artikel
     ================================================================ --}}
     @php
-        $title = 'Blog & Edukasi Digital | Tips Bisnis & Tutorial Web | Cakra Inovasi Digital';
+        $title = 'Blog & Edukasi Digital | Cakra Inovasi Digital';
         $metaDescription = 'Temukan tips bisnis digital, tutorial pembuatan website, strategi pemasaran online, dan berita
         teknologi terbaru untuk membantu UMKM Indonesia naik kelas.';
         $metaKeywords = 'blog bisnis digital, tips website umkm, tutorial web, strategi pemasaran online, edukasi teknologi,
