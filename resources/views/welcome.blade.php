@@ -881,7 +881,7 @@
                             <div :id="'faq-answer-' + faq.id"
                                 class="faq-answer overflow-hidden transition-all duration-300 ease-in-out"
                                 :style="selected === faq.id ? 'max-height: 500px; opacity: 1;' : 'max-height: 0; opacity: 0;'"
-                                aria-hidden="selected !== faq.id">
+                                :aria-hidden="selected !== faq.id">
                                 <div class="px-6 md:px-8 pb-6 md:pb-8 pt-0 pl-16 md:pl-20 relative">
                                     <div class="border-t border-slate-100 mb-5"></div>
                                     <div class="text-sm md:text-base text-slate-700 leading-relaxed space-y-3"
