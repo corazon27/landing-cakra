@@ -36,7 +36,7 @@
             </div>
 
             <nav aria-label="Navigasi footer">
-                <h4 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Navigasi</h4>
+                <h3 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Navigasi</h3>
                 <ul class="space-y-2.5" role="list">
                     @php
                     $navLinks = [
@@ -60,7 +60,7 @@
             </nav>
 
             <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Kontak & Jam Kerja</h4>
+                <h3 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Kontak & Jam Kerja</h3>
                 <address class="not-italic">
                     <ul class="space-y-4 text-sm text-slate-400" role="list">
                         <li class="flex items-start gap-2.5">
@@ -101,7 +101,7 @@
             </div>
 
             <div>
-                <h4 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Lokasi Kami</h4>
+                <h3 class="font-bold text-sm uppercase tracking-widest text-slate-300 mb-4">Lokasi Kami</h3>
                 <p class="text-slate-400 text-sm mb-4 leading-relaxed">
                     Kami berlokasi di Magelang, Jawa Tengah. Kunjungi kami atau dapatkan petunjuk arah langsung via
                     Google Maps.
