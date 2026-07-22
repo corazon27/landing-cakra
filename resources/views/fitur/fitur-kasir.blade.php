@@ -215,7 +215,7 @@
                             <td class="py-7 px-4 text-center">
                                 <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20tertarik%20dengan%20paket%20{{ $col['wa'] }}"
                                     target="_blank" rel="noopener noreferrer"
-                                    class="inline-block px-5 py-2.5 {{ $col['btn'] }} rounded-xl font-bold text-xs transition-all shadow-sm whitespace-nowrap">
+                                    class="btn-whatsapp-agen inline-block px-5 py-2.5 {{ $col['btn'] }} rounded-xl font-bold text-xs transition-all shadow-sm whitespace-nowrap" data-agent="CS Kontak Utama">
                                     Pilih Paket
                                 </a>
                             </td>
@@ -293,7 +293,8 @@
 
                         <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20tertarik%20dengan%20paket%20{{ $c['wa'] }}"
                             target="_blank" rel="noopener noreferrer"
-                            class="block w-full py-3 px-4 text-center rounded-xl {{ $c['btn'] }} font-bold transition-all text-sm">
+                            class="btn-whatsapp-agen block w-full py-3 px-4 text-center rounded-xl {{ $c['btn'] }} font-bold transition-all text-sm"
+                            data-agent="CS Kontak Utama">
                             Pilih Paket
                         </a>
                     </div>
@@ -380,7 +381,7 @@
                 <p class="text-slate-500 text-sm mb-4">Masih ragu memilih paket yang tepat?</p>
                 <a href="https://wa.me/6285865405330?text=Halo%20Cakra%20Inovasi%20Digital%2C%20saya%20ingin%20konsultasi%20paket%20toko%20online%20yang%20sesuai%20bisnis%20saya."
                     target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 bg-blue-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-blue-600 transition text-sm shadow-lg shadow-blue-200">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 bg-blue-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-blue-600 transition text-sm shadow-lg shadow-blue-200" data-agent="CS Kontak Utama">
                     <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
                     Konsultasi Gratis via WhatsApp
                 </a>
@@ -413,7 +414,7 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="https://wa.me/6285865405330?text=Halo%20Cakra%20Inovasi%20Digital%2C%20saya%20ingin%20konsultasi%20mengenai%20biaya%20berlangganan%20kasir%20digital."
                             target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-2 px-10 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition text-base">
+                            class="btn-whatsapp-agen inline-flex items-center justify-center gap-2 px-10 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:bg-blue-50 transition text-base" data-agent="CS Kontak Utama">
                             <i class="fa-brands fa-whatsapp text-emerald-500 text-lg" aria-hidden="true"></i>
                             Mulai Konsultasi Sekarang
                         </a>

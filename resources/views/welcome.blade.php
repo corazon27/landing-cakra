@@ -224,7 +224,8 @@
                         <div class="flex flex-col sm:flex-row gap-4 mb-10">
                             <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin konsultasi gratis soal pembuatan website untuk bisnis saya.' . ($suffix ?? '')) }}"
                                 target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center justify-center gap-2.5 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition duration-300 shadow-lg shadow-blue-200 text-sm md:text-base group">
+                                class="btn-whatsapp-agen inline-flex items-center justify-center gap-2.5 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition duration-300 shadow-lg shadow-blue-200 text-sm md:text-base group"
+                                data-agent="CS Kontak Utama">
                                 {{-- fa-brands fa-whatsapp -> inline SVG --}}
                                 <svg class="w-[18px] h-[18px] transition-transform group-hover:scale-110 shrink-0" fill="currentColor" viewBox="0 0 448 512" aria-hidden="true">
                                     <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32C101.5 32 1.9 131.6 1.9 254C1.9 293.1 12.1 331.3 31.5 365L0 480L117.7 449.1C150.1 466.8 186.7 476.1 224 476.1L224.1 476.1C346.4 476.1 448 376.5 448 254.1C448 194.8 422.8 139.1 380.9 97.1zM223.9 438.2C190.6 438.2 157.9 429.3 129.4 412.5L122.7 408.5L53.3 426.7L71.8 359L67.4 352C48.9 322.4 39.1 288.6 39.1 254C39.1 152 121.9 69.2 224 69.2C273.4 69.2 319.8 88.5 354.7 123.5C389.6 158.5 410.8 204.9 410.7 254.1C410.7 356.2 323.9 438.2 223.9 438.2zM322.4 300.8C316.9 298 289.6 284.6 284.5 282.8C279.4 280.9 275.7 280 272 285.5C268.3 291 257.9 303.3 254.6 307.1C251.3 310.8 248 311.3 242.5 308.5C209.3 291.9 187.5 278.8 165.6 241.2C159.8 231.2 171.4 231.9 182.2 210.3C184 206.6 183.1 203.4 181.7 200.6C180.3 197.8 169.3 170.5 164.7 159.5C160.2 148.8 155.6 150.3 152.2 150.1C149 149.9 145.3 149.9 141.6 149.9C137.9 149.9 131.9 151.3 126.8 156.8C121.7 162.3 107.4 175.7 107.4 203C107.4 230.3 127.3 256.7 130.1 260.4C132.9 264.1 169.1 320.1 224.7 344.2C258.3 358.8 271.6 360 288.6 357.5C299 356 320.7 344.3 325.3 331.4C329.8 318.5 329.8 307.5 328.4 305.2C327.1 302.7 323.4 301.3 317.8 298.6L322.4 300.8z"/>
@@ -457,7 +458,8 @@
                     <p class="text-slate-600 text-sm mb-5">Masih memiliki pertanyaan mengenai proses kolaborasi?</p>
                     <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin tahu lebih lanjut soal proses pembuatan website.' . ($suffix ?? '')) }}"
                         target="_blank" rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2.5 bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm md:text-base group shadow-lg shadow-emerald-100">
+                        class="btn-whatsapp-agen inline-flex items-center gap-2.5 bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm md:text-base group shadow-lg shadow-emerald-100" data-agent="CS Kontak Utama">
+                        {{-- fa-brands fa-whatsapp -> inline SVG --}}
                         <i class="fa-brands fa-whatsapp text-lg transition-transform group-hover:scale-110"
                             aria-hidden="true"></i>
                         Diskusi Langsung via WhatsApp
@@ -897,7 +899,7 @@
                     <p class="text-slate-600 text-sm mb-5">Masih memiliki pertanyaan spesifik lainnya?</p>
                     <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ada pertanyaan seputar jasa website Anda.' . ($suffix ?? '')) }}"
                         target="_blank" rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2.5 bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm md:text-base group shadow-lg shadow-emerald-100">
+                        class="btn-whatsapp-agen inline-flex items-center gap-2.5 bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm md:text-base group shadow-lg shadow-emerald-100" data-agent="CS Kontak Utama">
                         <i class="fa-brands fa-whatsapp text-lg transition-transform group-hover:scale-110"
                             aria-hidden="true"></i>
                         Tanya Langsung via WhatsApp
@@ -940,7 +942,8 @@
                         <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
                             <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin konsultasi untuk pembuatan website bisnis saya.' . ($suffix ?? '')) }}"
                                 target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center justify-center gap-2.5 px-10 py-4.5 bg-white text-blue-600 font-bold rounded-xl shadow-xl hover:bg-blue-50 transition duration-300 text-sm md:text-base group">
+                                class="btn-whatsapp-agen inline-flex items-center justify-center gap-2.5 px-10 py-4.5 bg-white text-blue-600 font-bold rounded-xl shadow-xl hover:bg-blue-50 transition duration-300 text-sm md:text-base group"
+                                data-agent="CS Kontak Utama">
                                 <i class="fa-brands fa-whatsapp text-emerald-500 text-xl transition-transform group-hover:scale-110"
                                     aria-hidden="true"></i>
                                 Mulai Konsultasi Strategis

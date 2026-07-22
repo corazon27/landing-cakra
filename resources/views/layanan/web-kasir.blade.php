@@ -129,7 +129,7 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin konsultasi sistem kasir digital untuk toko saya.' . ($suffix ?? '')) }}"
                             target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 rounded-2xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                            class="btn-whatsapp-agen inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 rounded-2xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200" data-agent="CS POS">
                             <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                             Konsultasi Gratis
                         </a>
@@ -360,7 +360,7 @@
                 <p class="text-slate-500 text-sm mb-3">Bisnis Anda memiliki alur operasional yang unik?</p>
                 <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin konsultasi sistem kasir custom untuk bisnis saya.' . $suffix) }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 text-blue-500 font-semibold hover:underline underline-offset-4 transition text-sm">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 text-blue-500 font-semibold hover:underline underline-offset-4 transition text-sm" data-agent="CS POS">
                     Mari diskusikan, kami bisa membuatkan fitur secara custom
                     <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                 </a>
@@ -618,7 +618,8 @@
                         {{-- Tombol CTA --}}
                         <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20tertarik%20dengan%20paket%20{{ urlencode($plan['title']) }}"
                             target="_blank" rel="noopener noreferrer"
-                            class="block w-full py-3 px-4 mt-auto text-center rounded-sm font-body font-bold text-sm transition-colors {{ $plan['accent'] === 'green' ? 'bg-[#1F3A2E] text-[#EFEAE0] hover:bg-[#16291F]' : 'bg-transparent border border-[#1F3A2E] text-[#1F3A2E] hover:bg-[#1F3A2E] hover:text-[#EFEAE0]' }}">
+                            class="btn-whatsapp-agen block w-full py-3 px-4 mt-auto text-center rounded-sm font-body font-bold text-sm transition-colors {{ $plan['accent'] === 'green' ? 'bg-[#1F3A2E] text-[#EFEAE0] hover:bg-[#16291F]' : 'bg-transparent border border-[#1F3A2E] text-[#1F3A2E] hover:bg-[#1F3A2E] hover:text-[#EFEAE0]' }}"
+                            data-agent="CS POS">
                             {{ $plan['cta'] }}
                         </a>
                     </div>
@@ -681,7 +682,8 @@
                 <p class="text-slate-500 text-sm mb-4">Masih ada pertanyaan lain?</p>
                 <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra, saya ada pertanyaan seputar sistem POS toko digital.' . $suffix) }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm"
+                    data-agent="CS POS">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                     Tanya Langsung via WhatsApp
                 </a>
@@ -756,7 +758,8 @@
                 <p class="text-slate-500 text-sm mb-4">Masih ada pertanyaan lain?</p>
                 <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra, saya ada pertanyaan seputar sistem POS atau Kasir Digital.' . $suffix) }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 bg-emerald-500 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 bg-emerald-500 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm"
+                    data-agent="CS POS">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                     Tanya Langsung via WhatsApp
                 </a>
