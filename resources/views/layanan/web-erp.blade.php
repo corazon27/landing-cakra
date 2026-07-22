@@ -249,7 +249,7 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin konsultasi pembuatan sistem ERP untuk bisnis saya.' . $suffix) }}"
                             target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 rounded-2xl bg-blue-600 text-white font-bold text-sm md:text-base hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                            class="btn-whatsapp-agen inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3.5 rounded-2xl bg-blue-600 text-white font-bold text-sm md:text-base hover:bg-blue-700 transition-all shadow-lg shadow-blue-200" data-agent="CS ERP">
                             <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
                             Konsultasi Gratis Sekarang
                         </a>
@@ -630,7 +630,7 @@
 
                         <a href="https://wa.me/6285865405330?text={{ $p['wa_text'] }}" target="_blank"
                             rel="noopener noreferrer"
-                            class="mt-auto block w-full py-3 md:py-3.5 px-6 text-center rounded-sm font-body font-bold text-sm transition-all duration-200 {{ $p['btn_style'] }}">
+                            class="btn-whatsapp-agen mt-auto block w-full py-3 md:py-3.5 px-6 text-center rounded-sm font-body font-bold text-sm transition-all duration-200 {{ $p['btn_style'] }}" data-agent="CS ERP">
                             @if($p['populer']) Ambil Penawaran Ini
                             @elseif($p['harga'] === 'Custom') Diskusi dengan Tim Ahli
                             @else Pilih Paket Ini
@@ -724,7 +724,7 @@
                 <p class="text-slate-500 text-sm mb-4">Masih ada pertanyaan lain?</p>
                 <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin bertanya soal sistem ERP untuk bisnis saya.' . $suffix) }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 bg-emerald-500 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 bg-emerald-500 text-white px-5 md:px-6 py-2.5 md:py-3 rounded-xl font-semibold hover:bg-emerald-600 transition text-sm" data-agent="CS ERP">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                     Tanya Langsung via WhatsApp
                 </a>

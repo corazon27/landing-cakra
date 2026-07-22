@@ -360,7 +360,7 @@
                             <p class="text-blue-100 text-xs leading-relaxed mb-4">
                                 Konsultasi gratis, tanpa syarat. Kami bantu pilih solusi yang tepat untuk bisnis Anda.
                             </p>
-                            <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20baca%20artikel%20%22{{ urlencode($article->title) }}%22%20dan%20tertarik%20konsultasi%20website." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white text-blue-600 px-4 py-2.5 rounded-xl text-xs font-black hover:bg-blue-50 transition w-full justify-center">
+                            <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20baca%20artikel%20%22{{ urlencode($article->title) }}%22%20dan%20tertarik%20konsultasi%20website." target="_blank" rel="noopener" class="btn-whatsapp-agen inline-flex items-center gap-2 bg-white text-blue-600 px-4 py-2.5 rounded-xl text-xs font-black hover:bg-blue-50 transition w-full justify-center" data-agent="CS Kontak Utama">
                                 <i class="fab fa-whatsapp text-emerald-500 text-sm"></i>
                                 Konsultasi Gratis Sekarang
                             </a>

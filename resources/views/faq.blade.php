@@ -127,8 +127,9 @@
                     Gak usah sungkan, tanya-tanya itu gak bayar kok. Kita ngobrol santai aja dulu lewat WhatsApp, siapa
                     tahu kita bisa jadi partner tumbuh bareng!
                 </p>
-                <a href="https://wa.me/6285865405330?text=Halo%2C%20saya%20tadi%20baca%20halaman%20tanya-jawab%2C%20tapi%20masih%20ada%20yang%20mau%20saya%20tanyain%20langsung%20nih.%20Boleh%20bantu%20jawab%3F"
-                    class="inline-block bg-white text-blue-600 px-10 py-4 rounded-2xl font-bold hover:bg-blue-50 transition">
+               <a href="https://wa.me/6285865405330?text=Halo%2C%20saya%20tadi%20baca%20halaman%20tanya-jawab..."
+                    class="btn-whatsapp-agen inline-block bg-white text-blue-600 px-10 py-4 rounded-2xl font-bold hover:bg-blue-50 transition"
+                    data-agent="CS FAQ">
                     Ngobrol di WhatsApp Yuk
                 </a>
             </div>

@@ -125,7 +125,8 @@
             {{-- Quick contact pills --}}
             <div class="mt-8 flex flex-wrap justify-center gap-3" data-aos="fade-up" data-aos-delay="100">
                 <a href="https://wa.me/6285865405330" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500 text-white text-sm font-bold rounded-full hover:bg-emerald-600 transition shadow-md shadow-emerald-200">
+                    class="btn-whatsapp-agen inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500 text-white text-sm font-bold rounded-full hover:bg-emerald-600 transition shadow-md shadow-emerald-200"
+                    data-agent="CS Kontak Utama">
                     <i class="fa-brands fa-whatsapp text-base" aria-hidden="true"></i>
                     +62 858-6540-5330
                 </a>
@@ -175,7 +176,7 @@
                             <p class="text-slate-400 text-xs">Atau langsung hubungi kami via WhatsApp untuk respon lebih
                                 cepat:</p>
                             <a href="https://wa.me/6285865405330" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition text-sm">
+                                class="btn-whatsapp-agen inline-flex items-center gap-2 mt-4 px-6 py-3 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-600 transition text-sm" data-agent="CS Kontak Utama">
                                 <i class="fa-brands fa-whatsapp text-base" aria-hidden="true"></i>
                                 Chat WhatsApp Sekarang
                             </a>
@@ -329,7 +330,7 @@
                                 menjawab pertanyaan Anda saat jam kerja.</p>
                             <a href="https://wa.me/6285865405330?text=Halo%20Cakra%20Inovasi%20Digital%2C%20saya%20ingin%20konsultasi%20gratis%20mengenai%20jasa%20website."
                                 target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 bg-white text-emerald-700 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-50 transition">
+                                class="btn-whatsapp-agen inline-flex items-center gap-2 bg-white text-emerald-700 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-50 transition" data-agent="CS Kontak Utama">
                                 <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                                 +62 858-6540-5330
                             </a>
@@ -362,7 +363,7 @@
                                     <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-0.5">
                                         WhatsApp</p>
                                     <a href="https://wa.me/6285865405330" target="_blank" rel="noopener noreferrer"
-                                        class="text-sm text-slate-700 hover:text-emerald-600 transition-colors font-medium">+62
+                                        class="btn-whatsapp-agen text-sm text-slate-700 hover:text-emerald-600 transition-colors font-medium" data-agent="CS Kontak Utama">+62
                                         858-6540-5330</a>
                                 </div>
                             </li>
@@ -582,7 +583,7 @@
                     </p>
                     <a href="https://wa.me/6285865405330?text=Halo%20Cakra%20Inovasi%20Digital%2C%20saya%20ingin%20konsultasi%20gratis%20mengenai%20jasa%20website."
                         target="_blank" rel="noopener noreferrer"
-                        class="inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-2xl transition-all shadow-lg shadow-emerald-500/30 text-base">
+                        class="btn-whatsapp-agen inline-flex items-center justify-center gap-3 px-8 md:px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-2xl transition-all shadow-lg shadow-emerald-500/30 text-base" data-agent="CS Kontak Utama">
                         <i class="fa-brands fa-whatsapp text-xl" aria-hidden="true"></i>
                         Mulai Chat WhatsApp
                     </a>

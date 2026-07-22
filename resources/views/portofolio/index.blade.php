@@ -326,7 +326,7 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya ingin diskusi mengenai solusi website untuk bisnis saya.') }}"
                             target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20 active:scale-95">
+                            class="btn-whatsapp-agen inline-flex items-center justify-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20 active:scale-95" data-agent="CS Portofolio">
                             <i class="fa-brands fa-whatsapp text-xl"></i>
                             Diskusi via WhatsApp
                         </a>

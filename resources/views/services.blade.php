@@ -477,7 +477,7 @@
                         <div class="flex flex-col sm:flex-row gap-5 justify-center">
                             <a href="https://wa.me/6285865405330?text={{ urlencode('Halo Cakra Inovasi Digital, saya memerlukan konsultasi teknis untuk memilih arsitektur sistem (POS/ERP/Katalog) yang sesuai dengan UMKM saya.') }}"
                                 target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-white text-slate-900 font-extrabold rounded-xl shadow-xl hover:bg-slate-50 hover:scale-105 transition-all duration-300 text-sm md:text-base">
+                                class="btn-whatsapp-agen inline-flex items-center justify-center gap-3 px-8 py-4.5 bg-white text-slate-900 font-extrabold rounded-xl shadow-xl hover:bg-slate-50 hover:scale-105 transition-all duration-300 text-sm md:text-base" data-agent="CS Kontak Utama">
                                 <i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i>
                                 Mulai Konsultasi Teknis
                             </a>

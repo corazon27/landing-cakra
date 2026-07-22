@@ -298,7 +298,7 @@
                     </p>
                     <a href="https://wa.me/6285865405330?text=Halo%20Cakra%2C%20saya%20ingin%20konsultasi%20website%20bisnis%20saya."
                         target="_blank"
-                        class="inline-flex items-center gap-2 mt-4 bg-white text-blue-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-50 transition">
+                        class="btn-whatsapp-agen inline-flex items-center gap-2 mt-4 bg-white text-blue-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-50 transition" data-agent="CS Kontak Utama">
                         <i class="fab fa-whatsapp text-emerald-500"></i>
                         Konsultasi Gratis
                     </a>
