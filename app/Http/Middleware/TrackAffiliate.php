@@ -20,14 +20,14 @@ class TrackAffiliate
 
         if ($request->has('ref')) {
             $ref = $request->query('ref');
-            
+
             // 1. Cek apakah user ini sudah pernah dihitung kliknya dalam sesi ini?
             // Kita cek keberadaan cookie khusus 'counted_click'
             $hasBeenCounted = $request->cookie('counted_click_' . $ref);
 
             if (!$hasBeenCounted) {
                 $affiliator = AffiliateUser::where('referral_code', $ref)->first();
-                
+
                 if ($affiliator) {
                     // 2. Tambah klik hanya jika belum dihitung sebelumnya
                     $affiliator->increment('clicks');

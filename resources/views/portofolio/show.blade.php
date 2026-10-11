@@ -1,22 +1,21 @@
 @php
     // Membuat Title Tag dinamis berdasarkan judul proyek dan kategorinya
-    $title = $portfolio->judul . ' - Portofolio ' . $portfolio->kategori . ' | Cakra Inovasi Digital';
-    
+    $title = $portfolio->judul . ' - Portofolio ' .$portfolio->kategori . ' | Cakra Inovasi Digital';
+
     // Mengamankan deskripsi singkat agar bersih dari tag HTML dan dibatasi sesuai standar SEO (~150 karakter)
     $metaDescription = \Illuminate\Support\Str::limit(strip_tags($portfolio->deskripsi_singkat), 150, '...');
-    
+
     // Membuat Keywords dinamis dengan menggabungkan kategori proyek dan Tech Stack yang digunakan
     $techKeywords = !empty($portfolio->tech_stack) ? ', ' . implode(', ', $portfolio->tech_stack) : '';
-    $metaKeywords = 'portofolio ' . strtolower($portfolio->kategori) . ', pembuatan aplikasi ' . strtolower($portfolio->kategori) . ', software umkm, cakra inovasi digital' . $techKeywords;
-    
-    $ogType = 'article';
-    $ogImage = $portfolio->gambar ? asset('storage/portofolio/' . $portfolio->gambar) : null;
+    $metaKeywords = 'portofolio ' . strtolower($portfolio->kategori) . ', pembuatan aplikasi ' . strtolower($portfolio->kategori) . ', software umkm, cakra inovasi digital' .$techKeywords;
+
+    $ogType = 'article';$ogImage = $portfolio->gambar ? asset('storage/portofolio/' . $portfolio->gambar) : null;
 @endphp
 
-<x-layout.app 
-    :title="$title" 
-    :meta-description="$metaDescription" 
-    :meta-keywords="$metaKeywords" 
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :meta-keywords="$metaKeywords"
     :og-type="$ogType"
     :og-image="$ogImage"
 >
@@ -30,9 +29,8 @@
             </div>
 
             {{-- Header Judul & Kategori --}}
-            <div class="mb-8" data-aos="fade-up">
-                <span
-                    class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider mb-3">
+            <div class="mb-8 text-center" data-aos="fade-up">
+                <span class="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider mb-3">
                     {{ $portfolio->kategori }}
                 </span>
                 <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -55,10 +53,93 @@
                 </div>
             </div>
 
-            {{-- Dua Kolom Konten --}}
+            {{-- Fitur Interaktif Multi-Tab & Carousel Screenshot --}}
+            @if(!empty($portfolio->tabs) && is_array($portfolio->tabs) && count($portfolio->tabs) > 0)
+            <section class="mb-16" data-aos="fade-up" data-aos-delay="150" x-data="{ activeTab: 0, activeImageIndex: 0 }">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="inline-block text-emerald-600 bg-emerald-50 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-2">
+                        FITUR UTAMA
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Eksplorasi Modul & Tampilan Sistem
+                    </h2>
+                </div>
+
+                <div class="bg-white rounded-[36px] p-6 md:p-10 shadow-sm border border-slate-100">
+                    {{-- Tab Navigasi Horizontal --}}
+                    <div class="flex overflow-x-auto scrollbar-none gap-2 border-b border-slate-100 mb-8 pb-3">
+                        <template x-for="(tab, index) in {{ json_encode($portfolio->tabs) }}" :key="index">
+                            <button @click="activeTab = index; activeImageIndex = 0;"
+                                :class="activeTab === index ? 'text-blue-600 border-blue-600 bg-blue-50/50 shadow-sm' : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-50'"
+                                class="px-5 py-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all border-b-2 flex items-center gap-2 cursor-pointer">
+                                <span x-text="tab.judul_tab"></span>
+                            </button>
+                        </template>
+                    </div>
+
+                    {{-- Konten Tab Aktif --}}
+                    <template x-for="(tab, index) in {{ json_encode($portfolio->tabs) }}" :key="index">
+                        <div x-show="activeTab === index" class="grid lg:grid-cols-12 gap-8 items-center">
+
+                            {{-- Kolom Kiri: Carousel Screenshot --}}
+                            <div class="lg:col-span-7 bg-slate-50/70 p-3 rounded-3xl border border-slate-200/60 relative">
+                                <template x-if="tab.images && tab.images.length > 0">
+                                    <div class="relative aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 shadow-inner">
+                                        <template x-for="(img, imgIdx) in tab.images" :key="imgIdx">
+                                            <div x-show="activeImageIndex === imgIdx" class="w-full h-full transition-opacity duration-300">
+                                                <img :src="`{{ asset('storage/portofolio/tabs') }}/${img}`" class="w-full h-full object-cover">
+                                            </div>
+                                        </template>
+
+                                        {{-- Tombol Navigasi Carousel Kiri/Kanan --}}
+                                        <template x-if="tab.images.length > 1">
+                                            <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
+                                                <button @click="activeImageIndex = (activeImageIndex === 0) ? tab.images.length - 1 : activeImageIndex - 1"
+                                                    class="w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center pointer-events-auto transition backdrop-blur-sm shadow-md cursor-pointer">
+                                                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                                                </button>
+                                                <button @click="activeImageIndex = (activeImageIndex === tab.images.length - 1) ? 0 : activeImageIndex + 1"
+                                                    class="w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center pointer-events-auto transition backdrop-blur-sm shadow-md cursor-pointer">
+                                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <template x-if="!tab.images || tab.images.length === 0">
+                                    <div class="aspect-[16/10] rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-xs font-medium">
+                                        Belum ada tangkapan layar untuk tab ini.
+                                    </div>
+                                </template>
+                            </div>
+
+                            {{-- Kolom Kanan: Deskripsi Tab & Poin Fitur --}}
+                            <div class="lg:col-span-5 space-y-6">
+                                <h3 class="text-2xl font-extrabold text-slate-900 leading-snug" x-text="tab.deskripsi"></h3>
+
+                                <ul class="space-y-3">
+                                    <template x-for="(poin, pIdx) in tab.fitur_poin" :key="pIdx">
+                                        <li class="flex items-start gap-3 text-slate-700 text-sm font-semibold leading-relaxed">
+                                            <span class="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                                                <i class="fa-solid fa-check text-xs"></i>
+                                            </span>
+                                            <span x-text="poin"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </template>
+                </div>
+            </section>
+            @endif
+
+            {{-- Dua Kolom Konten (Detail & Sidebar) --}}
             <div class="grid lg:grid-cols-3 gap-8 items-start">
 
-                {{-- Kolom Kiri: Detail & Fitur Utama --}}
+                {{-- Kolom Kiri: Detail, Pain Points, Testimoni & Fitur Umum --}}
                 <div class="lg:col-span-2 space-y-8" data-aos="fade-up" data-aos-delay="200">
 
                     {{-- Deskripsi --}}
@@ -75,8 +156,7 @@
                     @if(!empty($portfolio->pain_points))
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                         <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base"></i> Masalah Klien /
-                            Pain Points
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base"></i> Masalah Klien / Pain Points
                         </h2>
                         <ul class="space-y-3">
                             @foreach($portfolio->pain_points as $point)
@@ -88,23 +168,43 @@
                         </ul>
                     </div>
                     @endif
-
-                    {{-- Fitur Utama Sistem --}}
+                    {{-- Fitur Utama Sistem (List Umum) --}}
                     @if(!empty($portfolio->fitur_utama))
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                         <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-cubes text-blue-500 text-base"></i> Fitur Utama yang Dikembangkan
+                            <i class="fa-solid fa-cubes text-blue-500 text-base"></i> Ringkasan Fitur Sistem
                         </h2>
                         <div class="grid sm:grid-cols-2 gap-4">
                             @foreach($portfolio->fitur_utama as $fitur)
                             <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
                                     <i class="fa-solid fa-circle-check text-sm"></i>
                                 </div>
                                 <span class="text-sm font-semibold text-slate-700">{{ $fitur }}</span>
                             </div>
                             @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- Testimoni Klien (BARU) --}}
+                    @if(!empty($portfolio->testimoni_konten))
+                    <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 relative overflow-hidden">
+                        <div class="absolute top-6 right-8 text-blue-100 text-6xl font-serif select-none pointer-events-none">“</div>
+                        <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 relative z-10">
+                            <i class="fa-solid fa-quote-left text-blue-500 text-base"></i> Testimoni Klien
+                        </h2>
+                        <p class="text-slate-600 italic leading-relaxed relative z-10 mb-6">
+                            "{{ $portfolio->testimoni_konten }}"
+                        </p>
+                        <div class="flex items-center gap-3 pt-4 border-t border-slate-50 relative z-10">
+                            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                                {{ strtoupper(substr($portfolio->testimoni_nama ?? 'K', 0, 2)) }}
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">{{ $portfolio->testimoni_nama ?? 'Klien' }}</h4>
+                                <p class="text-xs text-slate-500">{{ $portfolio->testimoni_jabatan ?? $portfolio->klien_industri }}</p>
+                            </div>
                         </div>
                     </div>
                     @endif
@@ -118,8 +218,7 @@
                         <div class="space-y-4">
                             {{-- Klien --}}
                             <div class="flex items-center gap-4 py-3 border-b border-slate-50">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0">
+                                <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0">
                                     <i class="fa-solid fa-user-tie"></i>
                                 </div>
                                 <div>
@@ -132,8 +231,7 @@
 
                             {{-- Durasi --}}
                             <div class="flex items-center gap-4 py-3 border-b border-slate-50">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0">
+                                <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0">
                                     <i class="fa-solid fa-calendar-days"></i>
                                 </div>
                                 <div>
@@ -161,8 +259,7 @@
                         <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Teknologi & Framework</h3>
                         <div class="flex flex-wrap gap-2">
                             @foreach($portfolio->tech_stack as $tech)
-                            <span
-                                class="bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors border border-slate-200/60">
+                            <span class="bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors border border-slate-200/60">
                                 {{ $tech }}
                             </span>
                             @endforeach

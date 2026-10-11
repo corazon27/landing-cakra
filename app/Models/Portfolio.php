@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -9,7 +10,7 @@ class Portfolio extends Model
 {
     protected $fillable = [
         'judul', 'slug', 'filter', 'kategori', 'klien_industri', 'durasi', 'gambar',
-        'deskripsi_singkat', 'pain_points', 'tech_stack', 'fitur_utama',
+        'deskripsi_singkat', 'pain_points', 'tech_stack', 'fitur_utama', 'tabs',
         'impact_stat_1', 'impact_desc_1', 'impact_stat_2', 'impact_desc_2', 'impact_stat_3', 'impact_desc_3',
         'testimoni_konten', 'testimoni_nama', 'testimoni_jabatan'
     ];
@@ -19,6 +20,7 @@ class Portfolio extends Model
         'pain_points' => 'array',
         'tech_stack' => 'array',
         'fitur_utama' => 'array',
+        'tabs' => 'array',
     ];
 
     /**

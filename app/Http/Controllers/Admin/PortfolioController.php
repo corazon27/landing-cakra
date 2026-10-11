@@ -7,14 +7,13 @@ use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager; // Menggunakan driver GD bawaan PHP
+use Intervention\Image\ImageManager;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
         $portfolios = Portfolio::latest()->paginate(10);
-
         return view('admin.portfolio.index', compact('portfolios'));
     }
 
@@ -25,14 +24,14 @@ class PortfolioController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi Input
+        // 1. Validasi Input Utama + Tabs
         $request->validate([
             'judul' => 'required|string|max:255',
             'filter' => 'required|string',
             'kategori' => 'required|string',
             'klien_industri' => 'required|string',
             'durasi' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:3072', // Maksimal 3MB
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:3072',
             'deskripsi_singkat' => 'required|string',
             'pain_points' => 'required|array',
             'tech_stack' => 'required|array',
@@ -43,40 +42,68 @@ class PortfolioController extends Controller
             'impact_desc_2' => 'required|string',
             'impact_stat_3' => 'required|string',
             'impact_desc_3' => 'required|string',
+
+            // Validasi untuk Tabs & Carousel Images
+            'tabs' => 'nullable|array',
+            'tabs.*.judul_tab' => 'required|string',
+            'tabs.*.deskripsi' => 'required|string',
+            'tabs.*.fitur_poin' => 'nullable|array',
+            'tabs.*.images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 
-        $data = $request->except('gambar');
+        $data = $request->except('gambar', 'tabs');
 
-        // 2. PROSES AUTO-CONVERT WEBP (Intervention Image v3)
+        // 2. Proses Gambar Utama (Mockup)
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-
-            // Membuat nama file unik baru dengan ekstensi .webp
             $filename = time().'_'.uniqid().'.webp';
-
-            // Inisialisasi Image Manager dengan driver GD
             $manager = new ImageManager(new Driver);
-
-            // Baca gambar asli, lalu encode/konversi langsung ke format WebP dengan kualitas 80% (Seimbang antara tajam & ringan)
             $image = $manager->read($file)->toWebp(80);
-
-            // Simpan gambar hasil konversi ke folder local storage (storage/app/public/portofolio)
             Storage::disk('public')->put('portofolio/'.$filename, (string) $image);
-
-            // Masukkan nama file baru ke dalam array data database
             $data['gambar'] = $filename;
         }
 
-        // 3. Simpan ke database (Slug akan terisi otomatis lewat Model Booting kita sebelumnya)
-        portfolio::create($data);
+        // 3. Proses Data Tabs & Upload Carousel Images per Tab
+        $processedTabs = [];
+        if ($request->has('tabs')) {
+            foreach ($request->tabs as $index => $tabInput) {
+                $imagesList = [];
 
-        return redirect()->route('admin.portfolio.index')->with('success', 'portfolio baru berhasil dikonversi ke WebP dan diterbitkan!');
+                // Cek jika ada upload gambar carousel di tab ini
+                if ($request->hasFile("tabs.{$index}.images")) {
+                    foreach ($request->file("tabs.{$index}.images") as $imgFile) {
+                        $imgFilename = time().'_'.uniqid().'.webp';
+                        $manager = new ImageManager(new Driver);
+                        $convertedImg = $manager->read($imgFile)->toWebp(80);
+                        Storage::disk('public')->put('portofolio/tabs/'.$imgFilename, (string) $convertedImg);
+                        $imagesList[] = $imgFilename;
+                    }
+                }
+
+                // Jika sedang edit dan ada gambar lama yang dipertahankan (opsional)
+                if (isset($tabInput['existing_images'])) {
+                    $imagesList = array_merge($imagesList, $tabInput['existing_images']);
+                }
+
+                $processedTabs[] = [
+                    'judul_tab' => $tabInput['judul_tab'],
+                    'deskripsi' => $tabInput['deskripsi'],
+                    'fitur_poin' => $tabInput['fitur_poin'] ?? [],
+                    'images' => $imagesList
+                ];
+            }
+        }
+        $data['tabs'] = $processedTabs;
+
+        // 4. Simpan ke Database
+        Portfolio::create($data);
+
+        return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio berhasil diterbitkan dengan sistem Multi-Tab!');
     }
 
     public function edit($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-
         return view('admin.portfolio.edit', compact('portfolio'));
     }
 
@@ -84,14 +111,13 @@ class PortfolioController extends Controller
     {
         $portfolio = Portfolio::findOrFail($id);
 
-        // Validasi opsional untuk gambar saat update
         $request->validate([
             'judul' => 'required|string|max:255',
             'filter' => 'required|string',
             'kategori' => 'required|string',
             'klien_industri' => 'required|string',
             'durasi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072', // Maksimal 3MB
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'deskripsi_singkat' => 'required|string',
             'pain_points' => 'required|array',
             'tech_stack' => 'required|array',
@@ -102,42 +128,71 @@ class PortfolioController extends Controller
             'impact_desc_2' => 'required|string',
             'impact_stat_3' => 'required|string',
             'impact_desc_3' => 'required|string',
+
+            'tabs' => 'nullable|array',
+            'tabs.*.judul_tab' => 'required|string',
+            'tabs.*.deskripsi' => 'required|string',
+            'tabs.*.fitur_poin' => 'nullable|array',
+            'tabs.*.images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 
-        $data = $request->except('gambar');
+        $data = $request->except('gambar', 'tabs');
 
+        // Update Gambar Utama jika ada
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
             if ($portfolio->gambar) {
                 Storage::disk('public')->delete('portofolio/'.$portfolio->gambar);
             }
-
-            // Proses convert gambar baru ke WebP
             $file = $request->file('gambar');
             $filename = time().'_'.uniqid().'.webp';
             $manager = new ImageManager(new Driver);
             $image = $manager->read($file)->toWebp(80);
-
             Storage::disk('public')->put('portofolio/'.$filename, (string) $image);
             $data['gambar'] = $filename;
         }
 
+        // Proses Tabs & Carousel Images saat Update
+        $processedTabs = [];
+        if ($request->has('tabs')) {
+            foreach ($request->tabs as $index => $tabInput) {
+                // Ambil gambar lama yang dicentang untuk dipertahankan
+                $imagesList = $tabInput['existing_images'] ?? [];
+
+                // Upload gambar carousel baru jika ada
+                if ($request->hasFile("tabs.{$index}.images")) {
+                    foreach ($request->file("tabs.{$index}.images") as $imgFile) {
+                        $imgFilename = time().'_'.uniqid().'.webp';
+                        $manager = new ImageManager(new Driver);
+                        $convertedImg = $manager->read($imgFile)->toWebp(80);
+                        Storage::disk('public')->put('portofolio/tabs/'.$imgFilename, (string) $convertedImg);
+                        $imagesList[] = $imgFilename;
+                    }
+                }
+
+                $processedTabs[] = [
+                    'judul_tab' => $tabInput['judul_tab'],
+                    'deskripsi' => $tabInput['deskripsi'],
+                    'fitur_poin' => $tabInput['fitur_poin'] ?? [],
+                    'images' => $imagesList
+                ];
+            }
+        }
+        $data['tabs'] = $processedTabs;
+
         $portfolio->update($data);
 
-        return redirect()->route('admin.portfolio.index')->with('success', 'portfolio berhasil diperbarui!');
+        return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $portfolio = Portfolio::findOrFail($id);
-
-        // Hapus file gambar fisik agar tidak memenuhi memori server
         if ($portfolio->gambar) {
             Storage::disk('public')->delete('portofolio/'.$portfolio->gambar);
         }
-
+        // Hapus file gambar carousel tabs jika diperlukan...
         $portfolio->delete();
 
-        return redirect()->route('admin.portfolio.index')->with('success', 'portfolio berhasil dihapus!');
+        return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio berhasil dihapus!');
     }
 }
