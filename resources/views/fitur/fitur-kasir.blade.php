@@ -11,11 +11,11 @@
     ['name' => 'Fitur Web Kasir Digital / POS', 'url' => url('/fitur/web-kasir')],
     ];
     @endphp
-    
-<x-layout.app 
-    :title="$title" 
-    :meta-description="$metaDescription" 
-    :meta-keywords="$metaKeywords" 
+
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :meta-keywords="$metaKeywords"
     :og-type="$ogType"
     :breadcrumbs="$breadcrumbs"
 >
@@ -31,6 +31,7 @@
     mendapatkan update fitur berkala secara gratis, kecuali untuk penambahan fitur kustom di luar paket standar.'],
     ['question' => 'Apakah data penjualan saya aman dan ter-backup?', 'answer' => 'Sangat aman. Kami menggunakan
     enkripsi standar industri dan backup data secara rutin — harian hingga real-time sesuai paket yang dipilih.'],
+    ['question' => 'Bagaimana biaya jika toko saya memiliki cabang?', 'answer' => 'Pada paket langganan tahunan Versi Tablet dan Versi Web, outlet utama Rp1.000.000 per tahun. Setiap cabang tambahan dikenakan Rp500.000 per tahun.'],
     ['question' => 'Bagaimana cara memulai berlangganan?', 'answer' => 'Hubungi kami via WhatsApp untuk konsultasi
     gratis. Tim kami akan membantu memilih paket yang paling sesuai dengan kebutuhan dan skala bisnis Anda.'],
     ];
@@ -115,10 +116,10 @@
                             'Skema%20Per%20Transaksi'],
                             ['label' => 'Versi HP', 'sub' => 'Rp 50rb / bulan', 'badge' => null, 'btn' => 'bg-slate-800
                             hover:bg-slate-900 text-white', 'wa' => 'Versi%20HP'],
-                            ['label' => 'Versi Tablet', 'sub' => 'Rp 125rb / bulan', 'badge' => 'Paling Laris',
+                            ['label' => 'Versi Tablet', 'sub' => 'Rp 125rb / bulan', 'sub2' => 'Rp 1 jt / tahun', 'badge' => 'Paling Laris',
                             'badge_bg' => 'bg-emerald-500', 'btn' => 'bg-emerald-500 hover:bg-emerald-600 text-white',
                             'wa' => 'Versi%20Tablet'],
-                            ['label' => 'Versi Web', 'sub' => 'Rp 125rb / bulan', 'badge' => null, 'btn' =>
+                            ['label' => 'Versi Web', 'sub' => 'Rp 125rb / bulan', 'sub2' => 'Rp 1 jt / tahun', 'badge' => null, 'btn' =>
                             'bg-slate-800 hover:bg-slate-900 text-white', 'wa' => 'Versi%20Web'],
                             ];
                             @endphp
@@ -134,6 +135,9 @@
                                 <span
                                     class="block text-sm font-bold text-slate-900 {{ !empty($col['badge']) ? 'mt-5' : '' }}">{{ $col['label'] }}</span>
                                 <span class="block text-[11px] text-slate-400 mt-0.5">{{ $col['sub'] }}</span>
+                                @if(!empty($col['sub2']))
+                                <span class="inline-block text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5 mt-1.5 whitespace-nowrap">{{ $col['sub2'] }}</span>
+                                @endif
                             </th>
                             @endforeach
                         </tr>
@@ -225,6 +229,11 @@
 
                 </table>
             </div>
+
+            <p class="mt-4 text-center text-xs md:text-sm text-slate-500">
+                Harga tahunan <strong class="text-slate-700">Rp 1 jt / tahun</strong> berlaku untuk 1 outlet utama.
+                Setiap cabang tambahan dikenakan <strong class="text-slate-700">Rp 500.000 / tahun</strong>.
+            </p>
         </div>
     </section>
 
@@ -251,10 +260,10 @@
             'Sistem Pembayaran Fleksibel', 'Video Tutorial', 'Konsultasi Teknis'], 'btn' => 'border-2 border-slate-800
             text-slate-800 hover:bg-slate-800 hover:text-white', 'wa' => 'Versi%20HP'],
             ['badge' => 'Paling Laris', 'badge_bg' => 'bg-emerald-500', 'ring' => 'border-2 border-emerald-300', 'title'
-            => 'Versi Tablet', 'price' => 'Rp 125.000', 'unit' => '/ bulan / outlet', 'price_color' =>
+            => 'Versi Tablet', 'price' => 'Rp 125.000', 'yearly' => 'atau Rp 1.000.000 / tahun', 'branch' => 'Cabang tambahan +Rp 500.000 / tahun', 'unit' => '/ bulan / outlet', 'price_color' =>
             'text-emerald-600', 'perks' => ['Laporan Laba Rugi Real-time', 'Ekspor Excel', 'Multi-Kasir', 'Backup
             Real-time'], 'btn' => 'bg-emerald-500 hover:bg-emerald-600 text-white', 'wa' => 'Versi%20Tablet'],
-            ['badge' => null, 'ring' => 'border border-slate-200', 'title' => 'Versi Web', 'price' => 'Rp 125.000',
+            ['badge' => null, 'ring' => 'border border-slate-200', 'title' => 'Versi Web', 'price' => 'Rp 125.000', 'yearly' => 'atau Rp 1.000.000 / tahun', 'branch' => 'Cabang tambahan +Rp 500.000 / tahun',
             'unit' => '/ bulan / outlet', 'price_color' => 'text-slate-900', 'perks' => ['Laporan Laba Rugi Real-time',
             'Ekspor Excel', 'Dari Laptop / PC', 'Backup Real-time'], 'btn' => 'border-2 border-slate-800 text-slate-800
             hover:bg-slate-800 hover:text-white', 'wa' => 'Versi%20Web'],
@@ -279,7 +288,15 @@
                         <div class="mb-1">
                             <span class="text-3xl font-extrabold {{ $c['price_color'] }}">{{ $c['price'] }}</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 font-medium mb-5">{{ $c['unit'] }}</p>
+                        <div class="mb-5 min-h-[5rem]">
+                            <p class="text-[11px] text-slate-400 font-medium">{{ $c['unit'] }}</p>
+                            @if(!empty($c['yearly']))
+                            <p class="inline-block text-sm font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-1 mt-2">{{ $c['yearly'] }}</p>
+                            @if(!empty($c['branch']))
+                            <p class="text-[11px] font-medium text-slate-500 mt-1.5">{{ $c['branch'] }}</p>
+                            @endif
+                            @endif
+                        </div>
 
                         <ul class="space-y-2.5 flex-grow mb-6">
                             @foreach($c['perks'] as $perk)

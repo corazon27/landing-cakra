@@ -8,7 +8,7 @@
     'ogType'           => 'website',
     'noindex'          => false, // set true di halaman seperti /login, /admin, dst
 ])
- 
+
 @php
     $resolvedOgTitle       = $ogTitle ?? $title;
     $resolvedOgDescription = $ogDescription ?? $metaDescription;
@@ -201,7 +201,7 @@
                 'name' => 'Beranda',
                 'item' => url('/'),
             ]];
-            
+
             foreach ($breadcrumbs as $index => $crumb) {
                 $breadcrumbItems[] = [
                     '@type' => 'ListItem',
@@ -210,7 +210,7 @@
                     'item' => $crumb['url'],
                 ];
             }
-            
+
             $breadcrumbSchema = [
                 '@context' => 'https://schema.org',
                 '@type' => 'BreadcrumbList',

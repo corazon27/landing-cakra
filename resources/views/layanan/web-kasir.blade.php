@@ -17,10 +17,10 @@
     ];
 @endphp
 
-<x-layout.app 
-    :title="$title" 
-    :meta-description="$metaDescription" 
-    :meta-keywords="$metaKeywords" 
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :meta-keywords="$metaKeywords"
     :og-type="$ogType"
     :breadcrumbs="$breadcrumbs"
 >
@@ -38,7 +38,7 @@
     ['question' => 'Apakah sistem ini bisa digunakan di HP atau Tablet?', 'answer' => 'Sangat bisa. Website POS ini
     dibangun responsif dan mendukung Android, iOS, tablet, hingga PC kasir.'],
     ['question' => 'Dapatkah sistem mengelola banyak cabang (Multi-outlet)?', 'answer' => 'Ya. Anda dapat memantau stok
-    dan laporan keuangan dari berbagai cabang dalam satu dashboard admin terpusat.'],
+    dan laporan keuangan dari berbagai cabang dalam satu dashboard admin terpusat. Pada paket langganan tahunan, outlet utama Rp1.000.000/tahun dan setiap cabang tambahan Rp500.000/tahun.'],
     ['question' => 'Apakah stok barang otomatis berkurang saat ada penjualan?', 'answer' => 'Benar. Setiap transaksi
     memotong stok secara real-time, dan sistem memberi peringatan jika stok mendekati batas minimum.'],
     ['question' => 'Apakah saya bisa menarik laporan keuangan bulanan?', 'answer' => 'Tentu. Sistem menyediakan laporan
@@ -312,8 +312,6 @@
             komisi karyawan/kapster otomatis per transaksi dan database pelanggan.'],
             ['icon' => 'fa-solid fa-car', 'color' => 'blue', 'label' => 'Bengkel & Cuci Mobil', 'desc' => 'Gabungan
             penjualan sparepart, biaya jasa mekanik, dan estimasi waktu selesai pengerjaan.'],
-            ['icon' => 'fa-solid fa-pills', 'color' => 'amber', 'label' => 'Apotek & Klinik', 'desc' => 'Manajemen
-            tanggal kadaluarsa (expired date), batch obat, dan sinkronisasi resep.'],
             ['icon' => 'fa-solid fa-shirt', 'color' => 'indigo', 'label' => 'Toko Baju & Butik', 'desc' => 'Manajemen
             variasi warna & ukuran, retur barang, serta program membership/diskon.'],
             ['icon' => 'fa-solid fa-network-wired', 'color' => 'violet', 'label' => 'Franchise / Multi-Cabang', 'desc'
@@ -546,7 +544,9 @@
                 'price' => 'Rp125.000',
                 'unit' => 'Per bulan, per outlet',
                 'desc' => 'Tampilan lengkap, fitur full access. Ideal buat restoran & kafe.',
-                'note' => 'Langganan 12 bulan, hemat Rp300ribu.',
+                'yearly' => 'Rp1.000.000',
+                'branch' => 'Rp500.000',
+                'note' => 'Bayar tahunan, hemat Rp500ribu dibanding bulanan.',
                 'badge' => 'Paling Laris',
                 'accent' => 'green',
                 'cta' => 'Pilih Paket',
@@ -556,7 +556,9 @@
                 'price' => 'Rp125.000',
                 'unit' => 'Per bulan, per outlet',
                 'desc' => 'Tampilan simpel, cocok buat operasional dari laptop/PC kasir.',
-                'note' => 'Langganan 12 bulan, hemat Rp300ribu.',
+                'yearly' => 'Rp1.000.000',
+                'branch' => 'Rp500.000',
+                'note' => 'Bayar tahunan, hemat Rp500ribu dibanding bulanan.',
                 'badge' => null,
                 'accent' => 'slate',
                 'cta' => 'Pilih Paket',
@@ -600,6 +602,18 @@
                             <p class="text-xs text-[#6B6357] mt-2 font-body">
                                 {{ $plan['unit'] }}
                             </p>
+                            {{-- Harga tahunan: label + angka tebal dengan garis aksen merah; min-h menjaga header antar kartu tetap sejajar --}}
+                            <div class="mt-4 min-h-[4.5rem]">
+                                @if(!empty($plan['yearly']))
+                                <div class="border-l-[3px] border-[#B23A2E] pl-3 py-0.5">
+                                    <p class="font-mono text-[10px] font-semibold tracking-[0.14em] uppercase text-[#B23A2E]">Atau tahunan · outlet utama</p>
+                                    <p class="font-mono text-xl font-bold text-[#1F3A2E] leading-tight">{{ $plan['yearly'] }}<span class="font-body text-xs font-semibold text-[#6B6357]"> / tahun</span></p>
+                                    @if(!empty($plan['branch']))
+                                    <p class="font-body text-xs text-[#3A352C] mt-1">Cabang tambahan <strong class="font-mono text-[#B23A2E]">+{{ $plan['branch'] }}</strong> / tahun</p>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
                         </div>
 
                         {{-- Deskripsi Utama --}}
@@ -833,6 +847,7 @@
                 <li class="flex items-center gap-2 text-xs"><i class="fa-solid fa-circle-check text-orange-500 text-[10px]" aria-hidden="true"></i> Dashboard admin terpusat untuk memantau semua cabang</li>
                 <li class="flex items-center gap-2 text-xs"><i class="fa-solid fa-circle-check text-orange-500 text-[10px]" aria-hidden="true"></i> Mutasi stok antar cabang terpantau otomatis</li>
                 <li class="flex items-center gap-2 text-xs"><i class="fa-solid fa-circle-check text-orange-500 text-[10px]" aria-hidden="true"></i> Laporan penjualan per cabang maupun konsolidasi</li>
+                <li class="flex items-center gap-2 text-xs"><i class="fa-solid fa-circle-check text-orange-500 text-[10px]" aria-hidden="true"></i> <strong>Paket tahunan:</strong>&nbsp;outlet utama Rp1.000.000/tahun, cabang tambahan Rp500.000/tahun per cabang</li>
             </ul>`
                 },
                 {
