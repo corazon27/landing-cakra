@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # KEAMANAN: Blokir permanen dua endpoint maintenance yang sudah dihapus
+    RewriteRule ^(?:bersih-cache-cakra|perbaiki-gambar-cakra)/?$ - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

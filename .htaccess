@@ -15,6 +15,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
+    # KEAMANAN: Blokir permanen dua endpoint maintenance yang sudah dihapus
+    RewriteRule ^(?:public/)?(?:bersih-cache-cakra|perbaiki-gambar-cakra)/?$ - [F,L]
+
     # Jika ada permintaan file atau folder yang asli di dalam folder public, biarkan lewat
     RewriteCond %{REQUEST_URI} !^/public/
     

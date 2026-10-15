@@ -72,3 +72,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opened or inspected.
 - This change does not prove or alter the security posture of the production
   document root.
+
+### Changed
+
+- Added narrow Apache deny rules to the two tracked `.htaccess` files as defense in
+  depth for two retired maintenance endpoints:
+  - `public/.htaccess` — `RewriteRule ^(?:bersih-cache-cakra|perbaiki-gambar-cakra)/?$ - [F,L]`
+  - `.htaccess` — `RewriteRule ^(?:public/)?(?:bersih-cache-cakra|perbaiki-gambar-cakra)/?$ - [F,L]`
+
+### Apache deny rules — scope and residual risks
+
+- These rules are repository-only and have **not** been deployed to production.
+  The corresponding application routes were removed in an earlier commit; actual
+  production protection remains unverified until the rules are applied and tested
+  on the host.
+- The rules block only the two named endpoint families (optional `public/` prefix
+  and optional trailing slash, anchored), and do not affect other routes or assets.
+- Expected production behavior once deployed is HTTP 403 for those URLs; this is a
+  web-server response, independent of the application-level 404.
+- This change does not prove or alter the security posture of the production host.
