@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
 use App\Http\Controllers\frontArtikelController;
 use App\Http\Controllers\PortfolioController;
@@ -198,32 +197,3 @@ Route::get('/artikel', [frontArtikelController::class, 'index'])->name('front.ar
 Route::get('/artikel/{slug}', [frontArtikelController::class, 'show'])->name('front.artikel.detail');
 
 Route::post('/articles/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
-
-Route::get('/bersih-cache-cakra', function() {
-    Artisan::call('view:clear');
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    return "Cache View Berhasil Dibersihkan!";
-});
-
-Route::get('/perbaiki-gambar-cakra', function () {
-    // 1. Antisipasi jika dokumen root mengarah ke folder public
-    $publicStorage = public_path('storage');
-    if (!file_exists($publicStorage)) {
-        @symlink(base_path('storage/app/public'), $publicStorage);
-    }
-
-    // 2. Antisipasi jika dokumen root langsung di public_html
-    // Kita buat shortcut folder di dalam folder storage fisik agar langsung mengarah ke folder app/public
-    $folders = ['thumbnails', 'articles', 'portofolio', 'profile-photos'];
-    foreach ($folders as $folder) {
-        $target = base_path("storage/app/public/{$folder}");
-        $shortcut = base_path("storage/{$folder}");
-
-        if (file_exists(base_path('storage')) && !file_exists($shortcut)) {
-            @symlink($target, $shortcut);
-        }
-    }
-
-    return 'Selesai! Jalur gambar berhasil dihubungkan dengan aman tanpa menghapus data.';
-});
