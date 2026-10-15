@@ -48,3 +48,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   A replacement mechanism (for example a fixed-path `ln -s` run through cPanel Cron,
   or enabling the function at the host) remains an open follow-up and must be
   evaluated separately.
+
+### Removed
+
+- Untracked the following root-level artifacts from the Git index (local working
+  copies preserved; the files were not deleted):
+  - `db_cakra_inovasi.sql`
+  - `public.zip`
+  - `vendor.zip`
+- Added narrow root-level `.gitignore` rules so the same exact files cannot be
+  re-added accidentally: `/db_cakra_inovasi.sql`, `/public.zip`, `/vendor.zip`.
+
+### Repository hygiene — scope and residual risks
+
+- This change affects the current Git index only. The files remain present in
+  **historical Git commits**; no history rewrite was performed.
+- Local working copies remain intact and unmodified (verified by SHA-256
+  before/after).
+- No production-host cleanup was performed. The three files may still exist on the
+  server and remain downloadable if the document root exposes them.
+- The sensitivity of `db_cakra_inovasi.sql` — whether it contains secrets, personal
+  data, or production schema/data — remains **unassessed**; its contents were not
+  opened or inspected.
+- This change does not prove or alter the security posture of the production
+  document root.
