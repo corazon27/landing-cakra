@@ -8,13 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use App\Models\Gallery;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        $portfolios = Portfolio::latest()->paginate(10);
-        return view('admin.portfolio.index', compact('portfolios'));
+        $portfolios = Portfolio::latest()->get();
+        $totalItems = $portfolios->count();
+        $galleries = Gallery::latest()->get();
+
+        // Ubah dari 'portofolio.index' (frontend) ke view admin:
+        return view('admin.portfolio.index', compact('portfolios', 'totalItems', 'galleries'));
     }
 
     public function create()

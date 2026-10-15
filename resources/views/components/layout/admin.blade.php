@@ -48,6 +48,11 @@
                     <i class="fas fa-folder-open w-5 text-center"></i> Kelola Portfolio
                 </a>
 
+                <a href="{{ route('admin.galleries.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 transition {{ request()->routeIs('admin.galleries.*') ? 'bg-blue-600 text-white' : '' }}">
+                    <i class="fas fa-images w-5 text-center"></i> Kelola Galeri
+                </a>
+
                 <div class="pt-4 pb-2 px-4 text-xs font-bold uppercase text-slate-500 tracking-wider">
                     Sistem Affiliasi
                 </div>

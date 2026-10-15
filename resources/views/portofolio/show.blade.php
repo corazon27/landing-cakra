@@ -55,7 +55,37 @@
 
             {{-- Fitur Interaktif Multi-Tab & Carousel Screenshot --}}
             @if(!empty($portfolio->tabs) && is_array($portfolio->tabs) && count($portfolio->tabs) > 0)
-            <section class="mb-16" data-aos="fade-up" data-aos-delay="150" x-data="{ activeTab: 0, activeImageIndex: 0 }">
+            <section class="mb-16" data-aos="fade-up" data-aos-delay="150"
+                x-data="{
+                    activeTab: 0,
+                    activeImageIndex: 0,
+                    zoomImage: null,
+                    timer: null,
+                    startAutoplay() {
+                        this.stopAutoplay();
+                        this.timer = setInterval(() => {
+                            let currentTab = {{ json_encode($portfolio->tabs) }}[this.activeTab];
+                            if (currentTab && currentTab.images && currentTab.images.length > 1) {
+                                this.activeImageIndex = (this.activeImageIndex === currentTab.images.length - 1) ? 0 : this.activeImageIndex + 1;
+                            }
+                        }, 4000); // Berpindah setiap 4 detik
+                    },
+                    stopAutoplay() {
+                        if (this.timer) clearInterval(this.timer);
+                    },
+                    openZoom(imgUrl) {
+                        this.stopAutoplay();
+                        this.zoomImage = imgUrl;
+                    },
+                    closeZoom() {
+                        this.zoomImage = null;
+                        this.startAutoplay();
+                    }
+                }"
+                x-init="startAutoplay()"
+                @mouseenter="stopAutoplay()"
+                @mouseleave="startAutoplay()">
+
                 <div class="text-center max-w-2xl mx-auto mb-10">
                     <span class="inline-block text-emerald-600 bg-emerald-50 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-2">
                         FITUR UTAMA
@@ -69,7 +99,7 @@
                     {{-- Tab Navigasi Horizontal --}}
                     <div class="flex overflow-x-auto scrollbar-none gap-2 border-b border-slate-100 mb-8 pb-3">
                         <template x-for="(tab, index) in {{ json_encode($portfolio->tabs) }}" :key="index">
-                            <button @click="activeTab = index; activeImageIndex = 0;"
+                            <button @click="activeTab = index; activeImageIndex = 0; startAutoplay();"
                                 :class="activeTab === index ? 'text-blue-600 border-blue-600 bg-blue-50/50 shadow-sm' : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-50'"
                                 class="px-5 py-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all border-b-2 flex items-center gap-2 cursor-pointer">
                                 <span x-text="tab.judul_tab"></span>
@@ -84,21 +114,32 @@
                             {{-- Kolom Kiri: Carousel Screenshot --}}
                             <div class="lg:col-span-7 bg-slate-50/70 p-3 rounded-3xl border border-slate-200/60 relative">
                                 <template x-if="tab.images && tab.images.length > 0">
-                                    <div class="relative aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 shadow-inner">
+                                    <div class="relative aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 shadow-inner group">
                                         <template x-for="(img, imgIdx) in tab.images" :key="imgIdx">
-                                            <div x-show="activeImageIndex === imgIdx" class="w-full h-full transition-opacity duration-300">
-                                                <img :src="`{{ asset('storage/portofolio/tabs') }}/${img}`" class="w-full h-full object-cover">
+                                            <div x-show="activeImageIndex === imgIdx" class="w-full h-full transition-opacity duration-300 relative">
+                                                {{-- Gambar dengan Fitur Klik untuk Zoom --}}
+                                                <img :src="`{{ asset('storage/portofolio/tabs') }}/${img}`"
+                                                    @click="openZoom(`{{ asset('storage/portofolio/tabs') }}/${img}`)"
+                                                    class="w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-300">
+
+                                                {{-- Overlay Petunjuk Klik Zoom --}}
+                                                <div @click="openZoom(`{{ asset('storage/portofolio/tabs') }}/${img}`)"
+                                                    class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-zoom-in pointer-events-auto">
+                                                    <span class="bg-slate-900/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm shadow-md flex items-center gap-1.5">
+                                                        <i class="fa-solid fa-magnifying-glass-plus"></i> Klik untuk Perbesar
+                                                    </span>
+                                                </div>
                                             </div>
                                         </template>
 
                                         {{-- Tombol Navigasi Carousel Kiri/Kanan --}}
                                         <template x-if="tab.images.length > 1">
-                                            <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
-                                                <button @click="activeImageIndex = (activeImageIndex === 0) ? tab.images.length - 1 : activeImageIndex - 1"
+                                            <div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none z-10">
+                                                <button @click="activeImageIndex = (activeImageIndex === 0) ? tab.images.length - 1 : activeImageIndex - 1; startAutoplay();"
                                                     class="w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center pointer-events-auto transition backdrop-blur-sm shadow-md cursor-pointer">
                                                     <i class="fa-solid fa-chevron-left text-xs"></i>
                                                 </button>
-                                                <button @click="activeImageIndex = (activeImageIndex === tab.images.length - 1) ? 0 : activeImageIndex + 1"
+                                                <button @click="activeImageIndex = (activeImageIndex === tab.images.length - 1) ? 0 : activeImageIndex + 1; startAutoplay();"
                                                     class="w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center pointer-events-auto transition backdrop-blur-sm shadow-md cursor-pointer">
                                                     <i class="fa-solid fa-chevron-right text-xs"></i>
                                                 </button>
@@ -132,6 +173,30 @@
 
                         </div>
                     </template>
+                </div>
+
+                {{-- MODAL POP-UP ZOOM GAMBAR --}}
+                <div x-show="zoomImage"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    @keydown.escape.window="closeZoom()"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 sm:p-8"
+                    style="display: none;">
+
+                    {{-- Tombol Close --}}
+                    <button @click="closeZoom()"
+                        class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition backdrop-blur-md cursor-pointer z-50">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+
+                    {{-- Gambar Ukuran Besar --}}
+                    <div class="relative max-w-5xl max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl border border-white/10" @click.outside="closeZoom()">
+                        <img :src="zoomImage" class="w-full h-full object-contain max-h-[85vh] rounded-2xl">
+                    </div>
                 </div>
             </section>
             @endif
@@ -168,6 +233,7 @@
                         </ul>
                     </div>
                     @endif
+
                     {{-- Fitur Utama Sistem (List Umum) --}}
                     @if(!empty($portfolio->fitur_utama))
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
@@ -187,7 +253,7 @@
                     </div>
                     @endif
 
-                    {{-- Testimoni Klien (BARU) --}}
+                    {{-- Testimoni Klien --}}
                     @if(!empty($portfolio->testimoni_konten))
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 relative overflow-hidden">
                         <div class="absolute top-6 right-8 text-blue-100 text-6xl font-serif select-none pointer-events-none">“</div>

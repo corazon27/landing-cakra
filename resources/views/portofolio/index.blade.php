@@ -6,10 +6,10 @@
 @endphp
 
 {{-- FIX 1: Mengirimkan variabel SEO sebagai props ke layout --}}
-<x-layout.app 
-    :title="$title" 
-    :meta-description="$metaDescription" 
-    :meta-keywords="$metaKeywords" 
+<x-layout.app
+    :title="$title"
+    :meta-description="$metaDescription"
+    :meta-keywords="$metaKeywords"
     :og-type="$ogType"
 >
 
@@ -23,7 +23,6 @@
         "@type": "ItemList",
         "name": "Portofolio Cakra Inovasi Digital",
         "description": "Kumpulan hasil kerja nyata pembuatan website dan sistem digital untuk UMKM.",
-        {{-- FIX 2: Sintaks kurung kurawal dirapikan agar tidak error --}}
         "numberOfItems": {{ $totalItems }},
         "itemListElement": [
             @foreach($portfolios as $index => $porto)
@@ -31,26 +30,14 @@
                 "@type": "ListItem",
                 "position": {{ $index + 1 }},
                 "name": "{{ $porto->judul }}"
-            }{{ !$loop->last ? ',' : '' }} {{-- FIX 3: Memperbaiki operator !$loop->last --}}
+            }{{ !$loop->last ? ',' : '' }}
             @endforeach
         ]
     }
     </script>
     @endpush
 
-    {{-- ============================================================
-      Data Statis Tersisa (Galeri Aktivitas & Stats)
-    ============================================================ --}}
     @php
-    $gallery = [
-        ['img' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800', 'title' => 'Meeting Client A'],
-        ['img' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800', 'title' => 'Proses Coding Sistem POS'],
-        ['img' => 'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=800', 'title' => 'Diskusi UI/UX'],
-        ['img' => 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800', 'title' => 'Team Collaboration'],
-        ['img' => 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800', 'title' => 'Monitoring Server'],
-        ['img' => 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800', 'title' => 'Workspace'],
-    ];
-
     $stats = [
         ['angka' => '30+', 'label' => 'Proyek Selesai', 'color' => 'text-blue-600'],
         ['angka' => '4', 'label' => 'Jenis Layanan', 'color' => 'text-indigo-600'],
@@ -211,8 +198,8 @@
         </div>
     </section>
 
-    {{-- SECTION 3: GALERI DOKUMENTASI --}}
-    <section class="py-20 bg-white-50 border-t border-slate-200">
+    {{-- SECTION 3: GALERI DOKUMENTASI (Dinamis dari Database dengan Fitur Zoom / Lightbox) --}}
+    <section class="py-20 bg-slate-50 border-t border-slate-200" x-data="{ openZoom: false, activeImg: '', activeTitle: '' }">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
             <div class="mb-12" data-aos="fade-up">
                 <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">Aktivitas Kami</span>
@@ -220,14 +207,51 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-                @foreach($gallery as $g)
-                <figure class="group relative aspect-square overflow-hidden rounded-2xl bg-slate-200 shadow-sm" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 50 }}">
-                    <img src="{{ $g['img'] }}" alt="{{ $g['title'] }}" width="400" height="400" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <figcaption class="absolute inset-0 bg-blue-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-3">
-                        <p class="text-white text-center text-[10px] font-bold leading-snug uppercase">{{ $g['title'] }}</p>
+                @forelse($galleries as $g)
+                <figure class="group relative aspect-square overflow-hidden rounded-2xl bg-slate-200 shadow-sm cursor-pointer" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 50 }}"
+                    @click="openZoom = true; activeImg = '{{ asset('storage/galleries/' . $g->gambar) }}'; activeTitle = '{{ addslashes($g->judul) }}'">
+                    <img src="{{ asset('storage/galleries/' . $g->gambar) }}" alt="{{ $g->judul }}" width="400" height="400" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <figcaption class="absolute inset-0 bg-blue-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-3">
+                        <i class="fa-solid fa-magnifying-glass-plus text-white text-lg mb-1.5"></i>
+                        <p class="text-white text-center text-[10px] font-bold leading-snug uppercase">{{ $g->judul }}</p>
                     </figcaption>
                 </figure>
-                @endforeach
+                @empty
+                <div class="col-span-full py-8 text-slate-400 text-sm">
+                    Belum ada dokumentasi galeri yang diunggah.
+                </div>
+                @endforelse
+            </div>
+        </div>
+
+        {{-- Modal Lightbox Zoom Gambar --}}
+        <div x-show="openZoom" x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            @keydown.window.escape="openZoom = false">
+
+            <div class="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 md:p-6"
+                @click.away="openZoom = false"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100">
+
+                <button @click="openZoom = false" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <div class="text-center mb-4">
+                    <h3 class="font-extrabold text-slate-900 text-lg uppercase tracking-wide" x-text="activeTitle"></h3>
+                </div>
+
+                <div class="flex items-center justify-center bg-slate-900 rounded-2xl overflow-hidden max-h-[75vh]">
+                    <img :src="activeImg" :alt="activeTitle" class="max-h-[75vh] w-auto object-contain">
+                </div>
             </div>
         </div>
     </section>
@@ -274,7 +298,7 @@
         </div>
     </section>
 
-    {{-- SECTION 5: TESTIMONI --}}
+    {{-- SECTION 5: TESTIMONI (DINAMIS DATABASE) --}}
     <section class="py-20 bg-slate-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
             <div class="mb-14" data-aos="fade-up">
@@ -283,12 +307,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 text-left">
-                @foreach([
-                    ['nama' => 'Andi Pratama', 'peran' => 'Owner Toko Retail', 'inisial' => 'AP', 'bg' => 'bg-blue-500', 'quote' => 'Sistem kasir yang mereka buat sangat mudah digunakan. Stok barang sekarang tidak pernah selisih lagi.'],
-                    ['nama' => 'Siti Aminah', 'peran' => 'IT Manager', 'inisial' => 'SA', 'bg' => 'bg-indigo-500', 'quote' => 'Profesional, tepat waktu, dan komunikatif. Solusi software kustom mereka membantu tim kami bekerja efisien.'],
-                    ['nama' => 'Hendra Wijaya', 'peran' => 'Direktur Operasional', 'inisial' => 'HW', 'bg' => 'bg-amber-500', 'quote' => 'Dulu data antar divisi sering berantakan. Setelah pakai sistem ERP kustom ini, semua laporan keuangan dan stok sinkron otomatis secara real-time.'],
-                    ['nama' => 'Bpk. Subagyo', 'peran' => 'Pemilik Warung Makan', 'inisial' => 'BS', 'bg' => 'bg-rose-500', 'quote' => 'Menu QR Code-nya simpel sekali. Hemat biaya cetak buku menu tiap ada perubahan harga.'],
-                ] as $i => $t)
+                @forelse($testimonials as $i => $t)
                 <div class="bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm hover:shadow-md transition-shadow" data-aos="{{ $i % 2 === 0 ? 'fade-right' : 'fade-left' }}">
                     <div class="text-4xl text-blue-100 font-serif mb-4 leading-none" aria-hidden="true">“</div>
                     <blockquote class="text-slate-700 italic text-sm leading-relaxed mb-8">
@@ -304,7 +323,11 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-span-full py-8 text-center text-slate-400 text-sm">
+                    Belum ada testimoni yang ditambahkan.
+                </div>
+                @endforelse
             </div>
         </div>
     </section>

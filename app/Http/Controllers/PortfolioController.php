@@ -4,18 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
+use App\Models\Gallery;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        // Ambil semua data portfolio untuk galeri utama
         $portfolios = Portfolio::latest()->get();
-
-        // Hitung total data untuk keperluan Schema ItemList Google secara dinamis
         $totalItems = $portfolios->count();
 
-        return view('portofolio.index', compact('portfolios', 'totalItems'));
+        // 1. Ambil data galeri dokumentasi dari database
+        $galleries = Gallery::latest()->take(12)->get();
+
+        // 2. Ambil portofolio yang memiliki isi testimoni
+        $testimonialPortfolios = Portfolio::whereNotNull('testimoni_konten')
+            ->where('testimoni_konten', '!=', '')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        // Variasi warna background avatar agar menarik
+        $avatarColors = ['bg-blue-500', 'bg-indigo-500', 'bg-amber-500', 'bg-rose-500', 'bg-emerald-500'];
+
+        // Format data testimoni dari database
+        $testimonials = $testimonialPortfolios->map(function($item, $index) use ($avatarColors) {
+            $name = $item->testimoni_nama ?? 'Klien Cakra';
+            $words = explode(' ', trim($name));
+            if (count($words) >= 2) {
+                $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+            } else {
+                $initials = strtoupper(substr($name, 0, 2));
+            }
+
+            return [
+                'nama'     => $name,
+                'peran'    => $item->testimoni_jabatan ?: $item->klien_industri,
+                'inisial'  => $initials,
+                'bg'       => $avatarColors[$index % count($avatarColors)],
+                'quote'    => $item->testimoni_konten,
+            ];
+        });
+
+        // 3. Kirim $portfolios, $totalItems, $galleries, dan $testimonials ke view
+        return view('portofolio.index', compact('portfolios', 'totalItems', 'galleries', 'testimonials'));
     }
 
     public function show($slug)

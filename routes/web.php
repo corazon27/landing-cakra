@@ -8,6 +8,7 @@ use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WelcomeController;
 
 // rute admin
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\LoginController as AdminLogin;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\ArticleController as AdminArticle;
@@ -61,10 +62,10 @@ Route::get('/tanya-jawab', function () { return view('faq'); })->name('faq');
 Route::middleware('guest:affiliate')->group(function () {
     Route::get('/affiliate/register', function () { return view('affiliate.register'); })->name('affiliate.register');
     Route::post('/affiliate/register', [RegisterController::class, 'store'])->name('affiliate.register.store');
-    Route::get('/affiliate/login', function() { 
-        return view('affiliate.login'); 
-    })->name('affiliate.login'); 
-    
+    Route::get('/affiliate/login', function() {
+        return view('affiliate.login');
+    })->name('affiliate.login');
+
     Route::post('/affiliate/login', [LoginController::class, 'login'])->name('affiliate.login.post');
     Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -77,9 +78,9 @@ Route::middleware('guest:affiliate')->group(function () {
 // --- 1. EMAIL VERIFICATION ROUTES ---
 // SANGAT PENTING: Jangan beri prefix name 'affiliate.' di sini agar Laravel mengenali 'verification.notice'
 Route::middleware('auth:affiliate')->group(function () {
-    
+
     Route::get('/email/verify', function () {
-        return view('affiliate.verify-email'); 
+        return view('affiliate.verify-email');
     })->name('verification.notice'); // Link tujuan otomatis jika user belum verified
 
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
@@ -98,7 +99,7 @@ Route::middleware('auth:affiliate')->group(function () {
 
 // --- 2. AFFILIATE DASHBOARD AREA (DENGAN PREFIX & MIDDLEWARE VERIFIED) ---
 Route::prefix('affiliate')->name('affiliate.')->group(function () {
-    
+
     Route::middleware(['auth:affiliate', 'verified'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
@@ -126,7 +127,7 @@ Route::middleware(['auth:admin'])->prefix('management-center')->group(function (
 
     // Rute Khusus untuk Upload Image CKEditor (karena tidak ada di resource standar)
     Route::post('/artikel/upload', [AdminArticle::class, 'uploadEditorImage'])->name('admin.articles.upload');
-    
+
     Route::resource('articles', AdminArticle::class)->names([
         'index'   => 'admin.articles.index',
         'create'  => 'admin.articles.create',
@@ -154,7 +155,7 @@ Route::middleware(['auth:admin'])->prefix('management-center')->group(function (
     ])->parameters([
         'affiliates' => 'id'
     ]);
-    
+
     // Route untuk proyek yang sudah oke tadi
     Route::resource('projects', AdminProject::class)->names([
         'index' => 'admin.projects.index',
@@ -176,6 +177,15 @@ Route::middleware(['auth:admin'])->prefix('management-center')->group(function (
         'destroy' => 'admin.portfolio.destroy',
     ])->parameters([
         'portfolio' => 'id'
+    ]);
+
+    Route::resource('galleries', GalleryController::class)->names([
+        'index' => 'admin.galleries.index',
+        'create' => 'admin.galleries.create',
+        'store' => 'admin.galleries.store',
+        'edit' => 'admin.galleries.edit',
+        'update' => 'admin.galleries.update',
+        'destroy' => 'admin.galleries.destroy',
     ]);
 
     Route::get('withdrawals', [AdminAffiliate::class, 'indexWithdrawals'])->name('admin.withdrawals.index');
@@ -209,12 +219,11 @@ Route::get('/perbaiki-gambar-cakra', function () {
     foreach ($folders as $folder) {
         $target = base_path("storage/app/public/{$folder}");
         $shortcut = base_path("storage/{$folder}");
-        
+
         if (file_exists(base_path('storage')) && !file_exists($shortcut)) {
             @symlink($target, $shortcut);
         }
     }
-    
+
     return 'Selesai! Jalur gambar berhasil dihubungkan dengan aman tanpa menghapus data.';
 });
-
